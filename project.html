@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Projects | FERDRO Energy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    /* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background: #111;
+}
+
+/* Hero Section */
+.projects-hero {
+    height: 50vh;
+    background: linear-gradient(45deg, #ff8c00, #ff0000, #8a2be2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+}
+
+/* Filter Section */
+.filter-section {
+    text-align: center;
+    padding: 20px;
+}
+
+.filter-btn {
+    background: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    margin: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: #ff9900;
+}
+
+/* Projects Grid */
+.projects-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+.project-card {
+    background: #222;
+    border-radius: 8px;
+    padding: 15px;
+    width: 300px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.project-card img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.project-card h3 {
+    margin-top: 10px;
+    font-size: 1.5rem;
+}
+
+.project-card p {
+    font-size: 1rem;
+    color: #ddd;
+}
+
+.project-card:hover {
+    background: #333;
+}
+
+/* Back Button */
+.back-home {
+    text-align: center;
+    padding: 20px;
+}
+
+.back-btn {
+    background: #ffcc00;
+    color: #111;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.back-btn:hover {
+    background: #ff9900;
+}
+</style>
+<body>
+
+<!-- Hero Section -->
+<section class="projects-hero">
+    <div class="hero-content">
+        <h1>Our Projects</h1>
+        <p>Explore our past and ongoing solar energy projects.</p>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<div class="filter-section">
+    <button class="filter-btn active" onclick="filterProjects('all')">All</button>
+    <button class="filter-btn" onclick="filterProjects('completed')">Completed</button>
+    <button class="filter-btn" onclick="filterProjects('ongoing')">Ongoing</button>
+    <button class="filter-btn" onclick="filterProjects('upcoming')">Upcoming</button>
+</div>
+
+<!-- Projects Grid -->
+<section class="projects-grid">
+    <div class="project-card completed">
+        <img src="solarfarm.PNG" alt="Solar Farm Project">
+        <h3>Solar Farm Installation</h3>
+        <p>Completed in 2024, this 50MW solar farm now powers over 10,000 homes.</p>
+    </div>
+
+    <div class="project-card ongoing">
+        <img src="install.PNG" alt="Residential Solar Project">
+        <h3>Residential Solar Solutions</h3>
+        <p>Currently installing solar panels in 500+ homes across Lagos.</p>
+    </div>
+
+    <div class="project-card completed">
+        <img src="solarS.jfif" alt="School Solar Power">
+        <h3>School Solar Power Project</h3>
+        <p>Providing uninterrupted electricity to rural schools.</p>
+    </div>
+
+    <div class="project-card upcoming">
+        <img src="Capture.PNG" alt="Corporate Solar Energy">
+        <h3>Corporate Energy Transition</h3>
+        <p>Upcoming project to install solar power in 50+ office buildings.</p>
+    </div>
+</section>
+
+<!-- Back to Home Button -->
+<div class="back-home">
+    <a href="FERDRO.html" class="back-btn">← Back to Home</a>
+</div>
+
+<script>
+    function filterProjects(category) {
+        let cards = document.querySelectorAll('.project-card');
+        let buttons = document.querySelectorAll('.filter-btn');
+
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        cards.forEach(card => {
+            if (category === 'all' || card.classList.contains(category)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
