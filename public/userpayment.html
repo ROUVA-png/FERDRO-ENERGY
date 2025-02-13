@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Payments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>User Payments</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Service</th>
+                <th>Amount</th>
+                <th>Reference</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody id="paymentTable">
+            <!-- Payment details will be inserted here dynamically -->
+        </tbody>
+    </table>
+
+    <script>
+        // Function to fetch payments from the backend
+        async function fetchPayments() {
+            try {
+                const response = await fetch('/api/payments'); // Ensure your backend has this route
+                const payments = await response.json();
+
+                const paymentTable = document.getElementById('paymentTable');
+                paymentTable.innerHTML = ""; // Clear table before inserting new data
+
+                if (payments.length === 0) {
+                    paymentTable.innerHTML = "<tr><td colspan='5'>No payments found</td></tr>";
+                    return;
+                }
+
+                payments.forEach(payment => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${payment.name}</td>
+                        <td>${payment.service}</td>
+                        <td>₦${(payment.amount / 100).toLocaleString()}</td>
+                        <td>${payment.reference}</td>
+                        <td>${new Date(payment.date).toLocaleString()}</td>
+                    `;
+                    paymentTable.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching payments:", error);
+            }
+        }
+
+        // Call function when the page loads
+        document.addEventListener("DOMContentLoaded", fetchPayments);
+    </script>
+
+</body>
+</html>
