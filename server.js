@@ -132,7 +132,7 @@ app.delete("/users/:id", async (req, res) => {
 
 // Start Server
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on https://ferdro-energy.onrender.com`);
 });
 
 
