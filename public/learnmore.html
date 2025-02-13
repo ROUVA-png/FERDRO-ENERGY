@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn More | FERDRO Energy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    /* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background: #111;
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    background: linear-gradient(45deg, #ff8c00, #ff0000, #8a2be2);
+    background-size: 300% 300%;
+    animation: gradientAnimation 6s infinite alternate;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    text-transform: uppercase;
+}
+
+.hero-content p {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #ffcc00;
+    color: #111;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.cta-button:hover {
+    background: #ff9900;
+}
+
+/* Solar Solutions Section */
+.solar-solutions {
+    background: #222;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.solar-solutions h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.solutions-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.solution-card {
+    background: #333;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 280px;
+    transition: transform 0.3s;
+}
+
+.solution-card img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.solution-card:hover {
+    transform: scale(1.05);
+}
+
+/* Why Choose Us Section */
+.why-us {
+    background: #111;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.reasons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.reason {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 300px;
+    text-align: center;
+}
+
+/* CTA Section */
+.cta {
+    background: linear-gradient(90deg, #ff0000, #ff8c00);
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.cta h2 {
+    font-size: 2.5rem;
+}
+
+.cta p {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+</style>
+<body>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Discover the Future of Solar Energy</h1>
+        <p>Explore the most innovative solar solutions that are shaping a sustainable world.</p>
+        <a href="register.html" class="cta-button">Get Started</a>
+    </div>
+</section>
+
+<!-- Top 5 Solar Solutions -->
+<section class="solar-solutions">
+    <h2>Top 5 Solar Solutions</h2>
+    <div class="solutions-container">
+        <div class="solution-card">
+            <img src="solarphotovotalic.PNG" alt="Solar Panels">
+            <h3>1. Solar Photovoltaic (PV) Systems</h3>
+            <p>Convert sunlight directly into electricity using advanced solar panels.</p>
+        </div>
+        <div class="solution-card">
+            <img src="solarthermal.PNG" alt="Solar Thermal">
+            <h3>2. Solar Water Heating Systems</h3>
+            <p>Efficiently heat water using the power of the sun, reducing energy costs.</p>
+        </div>
+        <div class="solution-card">
+            <img src="solarbattery.PNG" alt="Solar Battery">
+            <h3>3. Solar Battery Storage</h3>
+            <p>Store excess solar energy for use at night or during power outages.</p>
+        </div>
+        <div class="solution-card">
+            <img src="solarlargescalefarm.PNG" alt="Solar Farms">
+            <h3>4. Large-Scale Solar Farms</h3>
+            <p>Massive solar installations generating clean energy for entire communities.</p>
+        </div>
+        <div class="solution-card">
+            <img src="solarfarm.PNG" alt="Hybrid Systems">
+            <h3>5. Hybrid Solar Systems</h3>
+            <p>Combine solar with other energy sources for maximum efficiency and reliability.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="why-us">
+    <h2>Why Choose FERDRO Energy?</h2>
+    <div class="reasons-container">
+        <div class="reason">
+            <h3>✅ Cutting-Edge Technology</h3>
+            <p>We use the latest solar innovations for maximum efficiency.</p>
+        </div>
+        <div class="reason">
+            <h3>✅ Affordable & Reliable</h3>
+            <p>Cost-effective solutions that stand the test of time.</p>
+        </div>
+        <div class="reason">
+            <h3>✅ Expert Support</h3>
+            <p>Our team is always ready to assist you in your solar journey.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <h2>Join the Solar Revolution</h2>
+    <p>Start your transition to renewable energy today!</p>
+    <a href="contact.html" class="cta-button">Contact Us</a>
+</section>
+
+</body>
+</html>
