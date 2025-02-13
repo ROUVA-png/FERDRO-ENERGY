@@ -81,21 +81,29 @@ app.post("/register", async (req, res) => {
 
 // Login Route
 app.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-
     try {
+        const { email, password } = req.body;
+        
+        console.log("Login request received:", req.body); // Debugging
+        
         const user = await User.findOne({ email });
-        if (!user) return res.status(400).json({ message: "User not found" });
+        if (!user) {
+            console.log("User not found");
+            return res.status(400).json({ message: "User not found" });
+        }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
+            console.log("Incorrect password");
             return res.status(400).json({ message: "Incorrect password" });
+        }
 
+        console.log("Login successful for", user.username);
         res.status(200).json({ message: "Login successful", username: user.username });
 
     } catch (error) {
         console.error("Login error:", error);
-        res.status(500).json({ message: "Something went wrong, try again!" });
+        res.status(500).json({ message: "Something went wrong, try again" });
     }
 });
 
