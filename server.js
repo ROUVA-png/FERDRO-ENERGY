@@ -22,7 +22,8 @@ mongoose.connect(process.env.MONGO_URI, {
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static("public")); // Serve static files
+const path = require("path");
+app.use(express.static(path.join(__dirname, "public")));
 
 
 
