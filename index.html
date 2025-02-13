@@ -1020,7 +1020,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
 //Below is the code to check if frontend is connected to backend
-        fetch("http://localhost:3000/api/test")
+        fetch("https://ferdro-energy.onrender.com/api/test")
     .then(response => response.json())
     .then(data => console.log(data.message))
     .catch(error => console.error("Error:", error));
