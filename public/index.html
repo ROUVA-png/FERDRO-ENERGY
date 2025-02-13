@@ -1,1 +1,1031 @@
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FERDRO ENERGY</title>
+   
+</head>
+<style>
+    /* General Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        
+    }
+
+    /* Navigation Bar */
+    header {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: black;
+        padding: 15px 0;
+        z-index: 1000;
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        margin: auto;
+        padding: 0px 20px; /*the first number :15px, is padding for the bar while the second one is for the list*/
+    }
+
+    .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 0 15px;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.0rem;
+        transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: #ff4c4c;
+    }
+
+    
+/* Dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    top: 100%;
+    left: 0;
+    list-style: none;
+    padding: 10px 0;
+    min-width: 180px;
+}
+
+.dropdown-menu li {
+    padding: 10px 20px;
+}
+
+.dropdown-menu a {
+    color: white;
+    display: block;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Mobile Menu */
+.hamburger {
+    display: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        background: rgba(0, 0, 0, 0.9);
+        top: 60px;
+        right: 0;
+        width: 200px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .nav-links li {
+        text-align: center;
+        padding: 15px 0;
+
+    }
+    .nav-links.show {
+        display:flex;/*Note!! without this particular property, your hamburger(menu toggle) will only display 
+        but will not show your nav li*/
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .nav-active {
+        display: flex;
+    }
+}
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* END OF DROPDOWN*/
+
+    /* Slideshow */
+    .slideshow-container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        animation: zoomEffect 6s infinite alternate ease-in-out;
+        
+}
+/*NOTE GUYSSSSS LOL, IT'S THIS RUBBISH ZOOM EFFECT THAT HAS BEEN GIVING US THE DRAGGED INTERFACE PROBLEM SINCE MORNING. STARTING FROM
+THAT STUPID ANIMATION UP THER*/
+
+/* Keyframes for Zoom Effect */
+@keyframes zoomEffect {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #fff;
+    }
+
+    .text h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    .text p {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+
+   /* .btn {
+        display: inline-block;
+        background: #ff4c4c;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+        background: #d43f3f;
+    }
+*/ /*Note!! this btn function is muted because were no longer using html for redirection from the slide button to other page
+    Javascript is responsible for that now, so button is active*/
+
+    .slideshow-controls {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+        z-index: 10;
+    }
+
+    .prev, .next {
+        cursor: pointer;
+        font-size: 2rem;
+        color: white;
+        padding: 10px 20px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+    }
+
+    .prev:hover, .next:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+
+    
+    /* New Section Styles */
+    section {
+        text-align: center;
+        padding: 50px 20px;
+        background: #f9f9f9;
+    }
+
+    .video-container {
+        margin: 20px auto;
+        max-width: 2000px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .video-container iframe{
+        width:2000px;
+        display:flex;
+        height: 550px;
+        background-size: contain;
+    }
+
+
+    .about-image {
+        width: 80%;
+        max-width: 600px;
+        display: block;
+        margin: 20px auto;
+    }
+
+    /*first section CSS>>>>>>>>>>>>>>*/
+    .green-energy-section {
+    text-align: center;
+    padding: 60px 20px;
+    background: whitesmoke;
+}
+
+.section-heading {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2a7c40;
+}
+
+.section-subtext {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+/* Layout Structure */
+.content-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* Image on the Left */
+.image-container {
+    width: 50%;
+}
+
+.image-container img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* Content Boxes on the Right */
+.content-box-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 50%;
+}
+
+.content-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.content-box h3 {
+    font-size: 1.5rem;
+    color: #2a7c40;
+    margin-bottom: 10px;
+}
+
+.content-box p {
+    color: #333;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.read-more, .view-offering {
+    color: #ff4c4c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.read-more:hover, .view-offering:hover {
+    text-decoration: underline;
+}
+
+/* SECOND SECTION CSS>>>>>>>>>>>> also note that the drag to next and prev effect came with the second section...still trying to figureout
+the maths behind it though*/
+
+.green-achievements-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    max-width: 1100px;
+    margin: auto;
+    padding: 60px 20px;
+}
+
+/* Text Styling */
+.text-container {
+    flex: 1;
+}
+
+.section-heading {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2a7c40;
+    margin-bottom: 10px;
+}
+
+.section-subtext {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.question-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.small-text {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Button Layout */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.achievement-btn {
+    background: #2a7c40;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    flex: 1;
+}
+
+.achievement-btn:hover {
+    background: #ff4c4c;
+}
+
+/* Image on the Right */
+.achievement-image {
+    flex: 1;
+    max-width: 400px;
+}
+
+.achievement-image img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* The Third section CSS>>>>>>>>*/
+.latest-insights {
+    max-width: 1100px;
+    margin: auto;
+    padding: 60px 20px;
+}
+
+.insights-heading {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.insights-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.insight-box {
+    background: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    flex: 1;
+}
+
+.insight-box img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.insight-content {
+    padding: 20px;
+}
+
+.category {
+    color: #2a7c40;
+    font-weight: bold;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+p1 {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.read-more {
+    color: #2a7c40;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.read-more:hover {
+    color: #ff4c4c;
+}
+
+/*FOOTER*/
+.site-footer {
+    background: black;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+}
+
+.footer-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #f4f8f3;
+}
+
+.footer-section p, .footer-section ul {
+    font-size: 1rem;
+    color: #ddd;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 8px;
+    list-style: none;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: red;
+}
+
+.footer-section ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Social Media Icons */
+.social-icons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.social-icons img {
+    width: 30px;
+    transition: transform 0.3s;
+}
+
+.social-icons img:hover {
+    transform: scale(1.1);
+}
+
+.footer-bottom {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+/* Button Styles */
+.button {
+    display: inline-block;
+    padding: 12px 24px; /*NOTE!! the original function of this double value padding is that
+     the first one work for the height of the button while the second one is for the width*/
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #028a0f, #004d00);
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    margin:10px;  /*responsible for the space between the join us and login button*/
+    z-index: 100;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: linear-gradient(135deg, #004d00, #028a0f);
+    transform: scale(1.05);
+}
+
+.button:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bulb {
+    width: 50px;
+    height: 50px;
+    animation: glow 1.5s infinite alternate;
+}
+
+
+.glow {
+    color: green;
+    text-shadow: 0 0 10px rgba(255, 255, 0, 0.7), 0 0 20px rgba(255, 255, 0, 0.5);
+}
+
+@keyframes glow {
+    0% {
+        filter: drop-shadow(0 0 5px rgba(255, 255, 0, 0.8));
+    }
+    100% {
+        filter: drop-shadow(0 0 15px rgba(255, 255, 0, 1));
+    }
+}
+/* Testimonials Section */
+.testimonials {
+    text-align: center;
+    background: #f8f8f8;
+    padding: 50px 20px;
+}
+
+.testimonial-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.testimonial {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    text-align: center;
+}
+
+.testimonial img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* CTA Section */
+.cta {
+    background: #004d00;
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.cta h2 {
+    font-size: 2rem;
+}
+
+.cta p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #00b300;
+    color: white;
+    font-size: 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.cta-button:hover {
+    background: #009900;
+}
+
+</style>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">FERDRO ENERGY<span class="glow">💡</span></div>
+            <div class="hamburger" onclick="toggleMenu()">☰</div> <!-- Hamburger icon -->
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li class="dropdown">
+                    <a href="#">Offices ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#nigeria">Nigeria</a></li>
+                        <li><a href="#spain">Spain</a></li>
+                        <li><a href="#united states">United  States</a></li>
+                        <li><a href="#united kingdom">United Kingdom</a></li>
+                        <li><a href="#spain">Brazil</a></li>
+                        <li><a href="#united states">Portugal</a></li>
+                        <li><a href="#nigeria">Ghana</a></li>
+                        <li><a href="#spain">Argetina</a></li>
+                        <li><a href="#united states">France</a></li>
+                    </ul>
+            <li class="dropdown">
+                <a href="#">Services ▼</a>
+                <ul class="dropdown-menu">
+                    <li><a href="services.html">Solar Installations</a></li>
+                    <li><a href="services.html">Energy Audits</a></li>
+                    <li><a href="services.html">Consulting</a></li>
+                </ul>
+                <li><a href="project.html">Projects</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Slideshow with Overlay Text -->
+    <div class="slideshow-container">
+        <div class="slide">
+            <img src="flux.jpg" alt="Solar Energy">
+            <div class="overlay"></div>
+            <div class="text">
+                <h1>Powering the Future with <br>FERDRO ENERGY</h1>
+                <p>Join us in the journey towards clean, renewable energy.</p>
+                <a href="solar innovation.html" class="button">Learn More</a><!-- NOTE! this code was modified by adding class="button
+                " and data-target="about.html" because the redirection was done with javascript.  Naturally if the redirecton was to be done
+                with only html, the code would looked like this:  <a href="about.html" class="btn" >Learn More</a> check java script
+                at the end of this page to see the code for the redirection-->
+
+            </div>
+        </div>
+
+        <div class="slide">
+            <img src="Web.jpeg" alt="Top 5 for 2025">
+            <div class="overlay"></div>
+            <div class="text">
+                <h1>Top 5 Solar Solutions</h1>
+                <p>Discover the latest innovations in renewable energy.</p>
+                <a href="#" class="button" >See More</a>
+
+            </div>
+        </div>
+
+        <div class="slide">
+            <img src="web3.PNG" alt="Innovative Energy">
+            <div class="overlay"></div>
+            <div class="text">
+                <h1>Innovative & Efficient</h1>
+                <p>Our solutions bring energy independence to you.</p>
+                <a href="register.html" class="button" >Learn How</a>
+            </div>
+        </div>
+
+        <div class="slide">
+            <img src="green.PNG" alt="Sustainable Future">
+            <div class="overlay"></div>
+            <div class="text">
+                <h1>Let’s Make the world Greener</h1>
+                <p>Join Us in the work for a cleaner tomorrow.</p>
+                <a href="learnmore.html" class="button" >Join Us</a>
+            </div>
+        </div>
+
+        <div class="slideshow-controls">
+            <span class="prev" onclick="changeSlide(-1)">&#10094;</span>
+            <span class="next" onclick="changeSlide(1)">&#10095;</span>
+        </div>
+    </div>
+
+    
+    <!--first section-->
+   
+    <section class="green-energy-section">
+        <h2 class="section-heading">Shaping a Sustainable Future</h2>
+        <p class="section-subtext">
+            See how FERDRO ENERGY is transforming the world with innovative renewable energy solutions.
+        </p>
+    
+        <div class="content-layout">
+            <!-- Left Side: Image -->
+            <div class="image-container">
+                <img src="future.PNG" alt="Solar Panels">
+            </div>
+    
+            <!-- Right Side: Content Boxes -->
+            <div class="content-box-container">
+                <!-- Featured Success Story -->
+                <div class="content-box">
+                    <h3>Solar Innovation Powers Communities</h3>
+                    <p>
+                        Our latest project has brought clean energy to over 5,000 homes, reducing carbon footprints 
+                        and lowering electricity costs.
+                    </p>
+                    <a href="solar innovation.html" class="read-more">Read story →</a>
+                </div>
+    
+                <!-- How We Help -->
+                <div class="content-box">
+                    <h3>How We Help</h3>
+                    <p>
+                        From solar panel installations to energy audits, we provide sustainable solutions 
+                        that drive environmental impact and energy independence.
+                    </p>
+                    <a href="#" class="view-offering">View offering →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!--second section-->
+
+    <section class="green-achievements-section">
+        <div id="secondsection"></div> 
+        <div class="text-container">
+            <h2 class="section-heading">We champion the future of Green Energy.</h2>
+            <p class="section-subtext">
+                Discover how solar energy innovations are transforming the world.  
+                Answer two questions and explore the latest breakthroughs.
+            </p>
+    
+            <h3 class="question-title">1. What solar achievement inspires you? <span class="small-text">Question 1 of 2</span></h3>
+    
+            <div class="button-group">
+                <div class="button-row">
+                    <button class="achievement-btn">Largest Solar Farm</button>
+                    <button class="achievement-btn">Off-Grid Solar Solutions</button>
+                </div>
+                <div class="button-row">
+                    <button class="achievement-btn">Solar-Powered Cities</button>
+                    <button class="achievement-btn">Renewable Energy Policies</button>
+                </div>
+                <div class="button-row">
+                    <button class="achievement-btn">Solar in Developing Countries</button>
+                    <button class="achievement-btn">Floating Solar Farms</button>
+                </div>
+                <div class="button-row">
+                    <button class="achievement-btn">Energy Storage Innovations</button>
+                    <button class="achievement-btn">More Achievements</button>
+                </div>
+            </div>
+        </div>
+    
+        <div class="achievement-image">
+            <img src="sbc.jpg" alt="Solar Energy Achievement">
+        </div>
+    </section>
+
+    <!--Thrd Section-->
+
+    <section class="latest-insights">
+        <div id="thirdsection"></div>
+        <h2 class="insights-heading">Our Latest Insights</h2>
+        <div class="insights-container">
+            <!-- First Insight -->
+            <div class="insight-box">
+                <img src="install.PNG" alt="Solar Innovation">
+                <div class="insight-content">
+                    <span class="category">Sustainability</span>
+                    <h3>Solar and Sustainability: The Future of Energy</h3>
+                    <p1>Discover how solar energy is driving global sustainability efforts, reducing carbon footprints, and transforming industries.</p1>
+                    <a href="project.html" class="read-more">Read More</a>
+                </div>
+            </div>
+
+            <!-- Second Insight -->
+            <div class="insight-box">
+                <img src="solar.webp" alt="Renewable Energy Trends">
+                <div class="insight-content">
+                    <span class="category">Innovation</span>
+                    <h3>Breaking Barriers: Next-Gen Renewable Energy Technologies</h3>
+                    <p>New breakthroughs in solar panels, energy storage, and eco-friendly solutions are revolutionizing the way we power the world.</p>
+                    <a href="project.html" class="read-more">Read More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- default Sections Below -->
+    <section>
+        <h2>What is Renewable Energy?</h2>
+        <div class="video-container">
+            <iframe width="1000" height="315" src="https://www.youtube.com/embed/inPtRWtvDaM" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </section>
+
+<!-- Testimonials Section -->
+<section class="testimonials">
+    <h2>What Our Clients Say</h2>
+    <div class="testimonial-container">
+        <div class="testimonial">
+            <img src="EBUBE.jpeg" alt="Client 1">
+            <p>"FERDRO Energy transformed our solar energy system. Highly recommend!"</p>
+            <h4>- Orakwue ebube</h4>
+        </div>
+        <div class="testimonial">
+            <img src="miriam.PNG" alt="Client 2">
+            <p>"Top-notch service and professionalism. A game-changer!"</p>
+            <h4>- Miriam Akaso</h4>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta">
+    <h2>Join the Green Energy Movement</h2>
+    <p>Switch to renewable energy today and power a sustainable future.</p>
+    <a href="register.html" class="cta-button">Get Started</a>
+</section>
+
+    <!--Footer section>>>>>>>>-->
+
+    <footer class="site-footer">
+        <footer id="contact">
+        <div class="footer-container">
+            <!-- Company Info -->
+            <div class="footer-section">
+                <h3>About FERDRO ENERGY</h3>
+                <p1>We are committed to powering the world with sustainable energy solutions, reducing carbon emissions, and promoting green innovations.</p1>
+            </div>
+    
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="#">Projects</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+    
+            <!-- Contact Information -->
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: contact@FERDROenergy.com</p>
+                <p>Phone: +123 456 7890</p>
+                <p>Location: Lagos, Nigeria</p>
+            </div>
+    
+            <!-- Social Media -->
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
+                    <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
+                    <a href="#"><img src="linkedin-icon.png" alt="LinkedIn"></a>
+                </div>
+            </div>
+        </div>
+    
+        <p class="footer-bottom">&copy; 2025 FERDRO ENERGY. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll(".slide");
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.style.opacity = "0");
+            slideIndex = (index + slides.length) % slides.length;
+            slides[slideIndex].style.opacity = "1";
+        }
+
+        function changeSlide(n) {
+            showSlide(slideIndex + n);
+        }
+
+        setInterval(() => changeSlide(1), 4000);
+        showSlide(slideIndex);
+
+        
+//below  is the Js code for login and register button click redirect in the homepage using javascript >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("joinUsButton").addEventListener("click", function (event) {
+        event.preventDefault();
+        window.location.href = "register.html";
+    });
+
+    document.getElementById("loginButton").addEventListener("click", function (event) {
+        event.preventDefault();
+        window.location.href = "login.html";
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+        let loggedInUser = localStorage.getItem("loggedInUser");
+
+        if (loggedInUser) {
+            // If user is logged in, redirect them to the dashboard
+            window.location.href = "Dashboard.html";
+        }
+    });
+// below is the script code for hmburger/toggle menu
+    function toggleMenu() {
+        document.querySelector(".nav-links").classList.toggle("show");
+    }
+    
+//Below is the code to check if frontend is connected to backend
+        fetch("https://ferdro-energy.onrender.com/api/test")
+    .then(response => response.json())
+    .then(data => console.log(data.message))
+    .catch(error => console.error("Error:", error));
+    </script>
+</body>
+</html>
