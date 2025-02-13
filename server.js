@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-
 const app = express();
 const PORT = 5000;
 
@@ -89,7 +88,8 @@ app.post("/login", async (req, res) => {
         if (!user) return res.status(400).json({ message: "User not found" });
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ message: "Incorrect password" });
+        if (!isMatch) {
+            return res.status(400).json({ message: "Incorrect password" });
 
         res.status(200).json({ message: "Login successful", username: user.username });
 
