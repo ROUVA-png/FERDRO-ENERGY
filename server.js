@@ -219,3 +219,33 @@ app.post('/paystack/webhook', async (req, res) => {
     res.sendStatus(200);
 });
 
+const axios = require('axios');
+
+app.get('/fetch-payments', async (req, res) => {
+    try {
+        const response = await axios.get('https://api.paystack.co/transaction', {
+            headers: {
+                Authorization: `sk_live_a59f2dc94b0d63f225a9276149cae44880ae3266` // Replace with your Paystack secret key
+            }
+        });
+
+        const payments = response.data.data; // Get transactions
+        for (let payment of payments) {
+            const existingPayment = await Payment.findOne({ reference: payment.reference });
+
+            if (!existingPayment && payment.status === "success") {
+                await Payment.create({
+                    email: payment.customer.email,
+                    amount: payment.amount / 100, // Convert from kobo to naira
+                    reference: payment.reference,
+                    date: new Date(payment.paid_at)
+                });
+            }
+        }
+
+        res.json({ message: "Payments fetched and stored successfully." });
+    } catch (error) {
+        console.error("Error fetching payments:", error);
+        res.status(500).json({ error: "Failed to fetch payments." });
+    }
+});
