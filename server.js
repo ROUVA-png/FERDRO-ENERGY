@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
@@ -8,18 +9,22 @@ const bodyParser = require("body-parser");
 const app = express();
 const PORT = 5000;
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-app.use(express.static("public")); // Serve static files
-
 // MongoDB Connection
-mongoose.connect("mongodb://127.0.0.1:27017/FERDROenergyDB", {
+console.log("mongoDB URI:", process.env.MONGO_URI);
+
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
 .then(() => console.log("MongoDB connected"))
 .catch(err => console.error("MongoDB connection error:", err));
+
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+app.use(express.static("public")); // Serve static files
+
+
 
 // User Schema & Model
 const userSchema = new mongoose.Schema({
