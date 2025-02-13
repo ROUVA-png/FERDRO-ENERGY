@@ -137,7 +137,7 @@ app.delete("/users/:id", async (req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
+app.listen(PORT,"0.0.0.0" () => {
     console.log(`Server running on port ${PORT}`);
 });
 
