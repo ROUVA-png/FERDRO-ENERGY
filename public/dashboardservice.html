@@ -191,6 +191,7 @@
         callback: function(response) {
             alert("Payment successful! Transaction ref: " + response.reference);
             logPayment(email, serviceType, amount); // Send to backend
+             window.location.href = "userpayment.html"; // Redirect users to user payment(userpayment.html) details page
         },
         onClose: function() {
             alert("Transaction cancelled");
