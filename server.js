@@ -232,7 +232,7 @@ app.get('/fetch-payments', async (req, res) => {
     try {
         const response = await axios.get('https://api.paystack.co/transaction', {
             headers: {
-                Authorization: `sk_live_a59f2dc94b0d63f225a9276149cae44880ae3266` // Replace with your Paystack secret key
+                Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`, // Replace with your Paystack secret key
             }
         });
 
