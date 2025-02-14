@@ -19,7 +19,7 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch(err => console.error("MongoDB connection error:", err));
 
 // Middleware
-app.use(cors());
+app.use(cors({origin: 'https://rouva-png.github.io/FERDRO-ENERGY/'}));
 app.use(bodyParser.json());
 const path = require("path");
 app.use(express.static(path.join(__dirname, "public")));
