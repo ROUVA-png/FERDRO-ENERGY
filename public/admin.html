@@ -1,12 +1,10 @@
-
-       <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <style>
         /* General Styling */
         body {
@@ -14,11 +12,12 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            display: flex;
         }
         
         /* Sidebar */
         .sidebar {
-            width: 180px;
+            width: 250px;
             height: 100vh;
             background: #222;
             color: white;
@@ -50,11 +49,22 @@
             background: #444;
         }
 
+        /* Close Button */
+        .close-btn {
+            display: none;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: white;
+        }
+
         /* Main Content */
         .main-content {
+            flex: 1;
             margin-left: 250px;
             padding: 20px;
-            transition: margin-left 0.3s ease-in-out;
         }
 
         /* Navbar */
@@ -65,16 +75,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        /* Hamburger Menu */
-        .hamburger {
-            display: none;
-            font-size: 24px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: white;
         }
 
         /* Table Styling */
@@ -112,46 +112,62 @@
             background: #e68900;
         }
 
-        /* Responsive Styles */
+        /* Hamburger Menu (Hidden on Large Screens) */
+        .hamburger {
+            display: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: white;
+            background: none;
+            border: none;
+            padding: 10px;
+        }
+
+        /* Sidebar behavior on small screens */
         @media screen and (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
                 position: fixed;
             }
-            .main-content {
-                margin-left: 0;
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .close-btn {
+                display: block;
             }
             .hamburger {
                 display: block;
             }
-            .sidebar.active {
-                transform: translateX(0);
+            .main-content {
+                margin-left: 0;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navbar with Hamburger Menu -->
-    <div class="navbar">
-        <button class="hamburger">&#9776;</button>
-        <h3>Welcome, Admin</h3>
-    </div>
-
     <!-- Sidebar -->
     <div class="sidebar">
+        <span class="close-btn">&times;</span> <!-- Close Button -->
         <h2>Admin Panel</h2>
         <ul>
             <li><a href="FERDRO.html">Dashboard</a></li>
             <li><a href="userpayment.html">Active Users</a></li>
-            <li><a href="users.html">Manage Users</a></li>  <!-- Manage Users Link -->
+            <li><a href="users.html">Manage Users</a></li>
             <li><a href="#">Settings</a></li>
-            <li><a href="logout.html" id="logout">Logout</a></li>
+            <li><a href="logout.html">Logout</a></li>
         </ul>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
+        
+        <!-- Navbar -->
+        <div class="navbar">
+            <button class="hamburger">&#9776;</button> <!-- Hamburger Button -->
+            <h3>Welcome, Admin</h3>
+        </div>
+
         <!-- Manage Users Button -->
         <a href="users.html" class="manage-users-btn">Manage Users</a>
 
@@ -172,9 +188,10 @@
                 </tr>
             </tbody>
         </table>
+
     </div>
 
-    <!-- JavaScript -->
+    <!-- JavaScript to Fetch Active Users and Toggle Sidebar -->
     <script>
         $(document).ready(function () {
             function fetchActiveUsers() {
@@ -206,19 +223,23 @@
                 });
             }
 
-            fetchActiveUsers();
-            setInterval(fetchActiveUsers, 60000);
+            fetchActiveUsers(); // Load users on page load
+            setInterval(fetchActiveUsers, 60000); // Refresh every 1 minute
 
-            // Toggle Sidebar
+            // Sidebar Toggle
             $(".hamburger").click(function () {
-                $(".sidebar").toggleClass("active");
+                $(".sidebar").addClass("active");
             });
 
-            // Logout Function
-            $("#logout").click(function () {
-                localStorage.removeItem("loggedInAdmin");
-                window.location.href = "login.html";
+            $(".close-btn").click(function () {
+                $(".sidebar").removeClass("active");
             });
+        });
+
+        // Logout Function
+        document.getElementById("logout").addEventListener("click", () => {
+            localStorage.removeItem("loggedInAdmin");
+            window.location.href = "login.html";
         });
     </script>
 
