@@ -198,6 +198,17 @@ THAT STUPID ANIMATION UP THER*/
         margin-bottom: 20px;
     }
 
+.text {
+        opacity: 0;
+        transform: translateX(20px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    
+    .text.fade-in {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
    /* .btn {
         display: inline-block;
         background: #ff4c4c;
