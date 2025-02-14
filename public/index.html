@@ -284,21 +284,52 @@
     </footer>
 
     <script>
-        let slideIndex = 0;
-        const slides = document.querySelectorAll(".slide");
+     //   let slideIndex = 0;
+      //  const slides = document.querySelectorAll(".slide");
 
-        function showSlide(index) {
-            slides.forEach(slide => slide.style.opacity = "0");
-            slideIndex = (index + slides.length) % slides.length;
-            slides[slideIndex].style.opacity = "1";
-        }
+       // function showSlide(index) {
+         //   slides.forEach(slide => slide.style.opacity = "0");
+           // slideIndex = (index + slides.length) % slides.length;
+            //slides[slideIndex].style.opacity = "1";
+        //}
+
+        //function changeSlide(n) {
+          //  showSlide(slideIndex + n);
+        //}
+
+        //setInterval(() => changeSlide(1), 4000);
+        //showSlide(slideIndex);
+
+
+
+
+        //For text ann//
+         let slideIndex = 0;
+const slides = document.querySelectorAll(".slide");
+
+function showSlide(index) {
+    slides.forEach(slide => {
+        slide.style.opacity = "0"; 
+        slide.querySelector(".text").classList.remove("fade-in"); // Remove fade-in class
+    });
+
+    slideIndex = (index + slides.length) % slides.length;
+    slides[slideIndex].style.opacity = "1";
+    
+    // Add fade-in animation to text
+    setTimeout(() => {
+        slides[slideIndex].querySelector(".text").classList.add("fade-in");
+    }, 200); // Small delay for better effect
+}
+
 
         function changeSlide(n) {
             showSlide(slideIndex + n);
         }
 
-        setInterval(() => changeSlide(1), 4000);
+        setInterval(() => changeSlide(1), 5000);
         showSlide(slideIndex);
+
 
         
 //below  is the Js code for login and register button click redirect in the homepage using javascript >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
