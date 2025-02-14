@@ -236,6 +236,8 @@ app.get('/fetch-payments', async (req, res) => {
             }
         });
 
+        
+     console.log("Fetched Payments:", response.data);// Debugging
         const payments = response.data.data; // Get transactions
         for (let payment of payments) {
             const existingPayment = await Payment.findOne({ reference: payment.reference });
