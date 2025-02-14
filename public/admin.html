@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+
+       <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | FERDRO ENERGY</title>
-    <link rel="stylesheet" href="styles.css">  <!-- Link to external CSS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- jQuery for AJAX -->
+    <title>Admin Panel</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
         /* General Styling */
         body {
@@ -17,7 +18,7 @@
         
         /* Sidebar */
         .sidebar {
-            width: 250px;
+            width: 180px;
             height: 100vh;
             background: #222;
             color: white;
@@ -25,6 +26,7 @@
             top: 0;
             left: 0;
             padding-top: 20px;
+            transition: transform 0.3s ease-in-out;
         }
         .sidebar h2 {
             text-align: center;
@@ -52,6 +54,7 @@
         .main-content {
             margin-left: 250px;
             padding: 20px;
+            transition: margin-left 0.3s ease-in-out;
         }
 
         /* Navbar */
@@ -62,6 +65,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
         }
 
         /* Table Styling */
@@ -98,9 +111,32 @@
         .manage-users-btn:hover {
             background: #e68900;
         }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .hamburger {
+                display: block;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+        }
     </style>
 </head>
 <body>
+
+    <!-- Navbar with Hamburger Menu -->
+    <div class="navbar">
+        <button class="hamburger">&#9776;</button>
+        <h3>Welcome, Admin</h3>
+    </div>
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -110,18 +146,12 @@
             <li><a href="userpayment.html">Active Users</a></li>
             <li><a href="users.html">Manage Users</a></li>  <!-- Manage Users Link -->
             <li><a href="#">Settings</a></li>
-            <li><a href="logout.html">Logout</a></li>
+            <li><a href="logout.html" id="logout">Logout</a></li>
         </ul>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        
-        <!-- Navbar -->
-        <div class="navbar">
-            <h3>Welcome, Admin</h3>
-        </div>
-
         <!-- Manage Users Button -->
         <a href="users.html" class="manage-users-btn">Manage Users</a>
 
@@ -142,10 +172,9 @@
                 </tr>
             </tbody>
         </table>
-
     </div>
 
-    <!-- JavaScript to Fetch Active Users -->
+    <!-- JavaScript -->
     <script>
         $(document).ready(function () {
             function fetchActiveUsers() {
@@ -177,16 +206,20 @@
                 });
             }
 
-            fetchActiveUsers(); // Load users on page load
-            setInterval(fetchActiveUsers, 60000); // Refresh every 1 minute
+            fetchActiveUsers();
+            setInterval(fetchActiveUsers, 60000);
+
+            // Toggle Sidebar
+            $(".hamburger").click(function () {
+                $(".sidebar").toggleClass("active");
+            });
+
+            // Logout Function
+            $("#logout").click(function () {
+                localStorage.removeItem("loggedInAdmin");
+                window.location.href = "login.html";
+            });
         });
-
-
-        // Logout Function
-document.getElementById("logout").addEventListener("click", () => {
-    localStorage.removeItem("loggedInAdmin");
-    window.location.href = "login.html";
-});
     </script>
 
 </body>
