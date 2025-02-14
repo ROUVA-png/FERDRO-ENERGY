@@ -26,15 +26,17 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 
-// User Schema & Model
+// Updated User Schema with isAdmin field
 const userSchema = new mongoose.Schema({
     username: String,
     email: { type: String, unique: true },
     password: String,
     verified: { type: Boolean, default: false },
+    isAdmin: { type: Boolean, default: false }, // 
     createdAt: { type: Date, default: Date.now }
 });
 const User = mongoose.model("User", userSchema);
+
 
 // Nodemailer Configuration
 const transporter = nodemailer.createTransport({
@@ -80,6 +82,7 @@ app.post("/register", async (req, res) => {
 });
 
 // Login Route
+
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
@@ -90,7 +93,20 @@ app.post("/login", async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: "Incorrect password" });
 
-        res.status(200).json({ message: "Login successful", username: user.username });
+        // Check if user is an admin
+        if (user.isAdmin) {
+            return res.status(200).json({
+                message: "Admin login successful",
+                username: user.username,
+                isAdmin: true // ✅ Indicate admin login
+            });
+        }
+
+        res.status(200).json({
+            message: "Login successful",
+            username: user.username,
+            isAdmin: false // ✅ Regular user login
+        });
 
     } catch (error) {
         console.error("Login error:", error);
