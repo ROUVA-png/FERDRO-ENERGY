@@ -152,7 +152,8 @@ p a:hover {
                     //this localstorage below can make your login page not to redirect users to dashboard 
                     //after logging in, if the local storage.setItem name ("loggedInUsers") is not also named as 
                     //loggedInUsers in dashboard.html. and this was a big snag for me while doing this project
-                    localStorage.setItem("loggedInUser", data.username); //store useername if needed
+                    localStorage.setItem("loggedInUser", data.username); //store username if needed
+                     localStorage.setItem("userRole", data.role);//Store role (admin/user)
 
                       // Check if the user is an admin 
             if (data.role === "admin") { 
