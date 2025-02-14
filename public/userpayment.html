@@ -47,7 +47,7 @@
     <script>
        async function fetchPayments() {
     try {
-        const response = await fetch('/fetch-payments'); // Ensure this route exists
+      const response = await fetch('https://ferdro-energy.onrender.com/fetch-payments'); // Ensure this matches your server.js route
         const data = await response.json();
 
         console.log("Received payments:", data); // Debugging
