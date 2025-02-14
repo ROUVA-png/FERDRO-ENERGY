@@ -93,27 +93,26 @@ app.post("/login", async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: "Incorrect password" });
 
-        // Check if user is an admin
-        if (user.isAdmin) {
+        // Check user role
+        if (user.role === "admin") {
             return res.status(200).json({
                 message: "Admin login successful",
                 username: user.username,
-                isAdmin: true // ✅ Indicate admin login
+                isAdmin: true // ✅ Admin login
             });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Login successful",
             username: user.username,
             isAdmin: false // ✅ Regular user login
         });
 
     } catch (error) {
-        console.error("Login error:", error);
-        res.status(500).json({ message: "Something went wrong, try again!" });
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
     }
 });
-
 
 // Get All Users (For Admin Page)
 app.get("/api/users", async (req, res) => {
