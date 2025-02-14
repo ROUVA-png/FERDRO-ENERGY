@@ -93,19 +93,11 @@ app.post("/login", async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: "Incorrect password" });
 
-        // Check user role
-        if (user.role === "admin") {
-            return res.status(200).json({
-                message: "Admin login successful",
-                username: user.username,
-                isAdmin: true // ✅ Admin login
-            });
-        }
-
+       // ✅ Return user role instead of isAdmin
         return res.status(200).json({
             message: "Login successful",
             username: user.username,
-            isAdmin: false // ✅ Regular user login
+            role: user.role // ✅ Send role ("admin" or "user")
         });
 
     } catch (error) {
