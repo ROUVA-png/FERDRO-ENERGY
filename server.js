@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     password: String,
     verified: { type: Boolean, default: false },
-    role: { type: string, default: "user" }, // 
+    role: { type: String, default: "user" }, // 
     createdAt: { type: Date, default: Date.now }
 });
 const User = mongoose.model("User", userSchema);
