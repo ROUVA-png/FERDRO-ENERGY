@@ -154,6 +154,7 @@ p a:hover {
                     //loggedInUsers in dashboard.html. and this was a big snag for me while doing this project
                     localStorage.setItem("loggedInUser", data.username); //store username if needed
                      localStorage.setItem("userRole", data.role);//Store role (admin/user)
+                    console.log("Recieved role:",data.role);// Debugging line
 
                       // Check if the user is an admin 
             if (data.role === "admin") { 
