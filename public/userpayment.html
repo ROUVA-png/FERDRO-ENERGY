@@ -55,7 +55,7 @@
         const paymentTable = document.getElementById('paymentTable');
         paymentTable.innerHTML = ""; // Clear table before inserting new data
 
-        if (!data.success || data.payments.length === 0) {
+        if (!data.payments || data.payments.length === 0) {
             paymentTable.innerHTML = "<tr><td colspan='5'>No payments found</td></tr>";
             return;
         }
