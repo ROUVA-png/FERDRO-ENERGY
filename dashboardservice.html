@@ -154,61 +154,164 @@
     </section>
 
     <script>
-        function payWithPaystack(formId) {
-    let form = document.getElementById(formId);
-    let email = prompt("Enter your email for payment:");
+      document.addEventListener("DOMContentLoaded", function() {
+        const panelPrices = { mono: 250000, poly: 180000, "thin-film": 150000, bifacial: 280000, perc: 300000 };
+        const batteryPrices = { lithium: 350000, agm: 250000, gel: 220000 };
+        const kvaPrices = { "2.5": 400000, "5": 750000, "7.5": 1200000 };
     
-    // Ensure a package is selected
-    let amountElement = form.querySelector("select:nth-of-type(2)");
-    if (!amountElement) {
-        alert("Please select a package.");
-        return;
-    }
-
-    let amount = amountElement.value; // Get selected package price
-    if (!amount) {
-        alert("Transaction amount not set. Please select a package.");
-        return;
-    }
-
-    let serviceType = form.parentNode.querySelector("h2").textContent; // Get section title (service name)
-
-    let handler = PaystackPop.setup({
-        key: 'pk_live_e9ebf50a308430f8fc21876b24fa10fed5645603',   // Replace with your Paystack public key
-        email: email,
-        amount: parseInt(amount) * 100, // Convert to kobo
-        currency: "NGN",
-        ref: "FERDRO-" + Math.floor((Math.random() * 1000000000) + 1),
-        metadata: {
-            custom_fields: [
-                {
-                    display_name: "Service",
-                    variable_name: "service",
-                    value: serviceType
-                }
-            ]
-        },
-        callback: function(response) {
-            alert("Payment successful! Transaction ref: " + response.reference);
-            logPayment(email, serviceType, amount); // Send to backend
-        },
-        onClose: function() {
-            alert("Transaction cancelled");
+        document.querySelector("#serviceType").addEventListener("change", (e) => {
+            let details = document.querySelector("#serviceDetails");
+            details.innerHTML = e.target.value === "ferdro" ? 
+                `<label>Date of Appointment: <input type="date" id="appointmentDate"></label>
+                 <label>Home Address: <input type="text" id="address"></label>
+                 <label>Phone Number: <input type="tel" id="phone"></label>` :
+                `<label>Delivery Date: <input type="date" id="deliveryDate"></label>
+                 <label>Home Address: <input type="text" id="address"></label>
+                 <label>Phone Number: <input type="tel" id="phone"></label>`;
+        });
+    
+        document.querySelector("#installationType").addEventListener("change", (e) => {
+            let installationType = e.target.value;
+            let panelQty = document.querySelector("#panelQuantity");
+            let batteryQty = document.querySelector("#batteryQuantity");
+            let companyNameField = document.querySelector("#companyNameField");
+    
+            if (installationType === "company") {
+                panelQty.setAttribute("max", "15");
+                batteryQty.setAttribute("max", "9");
+                companyNameField.style.display = "block"; // Show Company Name field
+            } else {
+                panelQty.setAttribute("max", "10");
+                batteryQty.setAttribute("max", "6");
+                companyNameField.style.display = "none"; // Hide Company Name field
+            }
+        });
+    
+        document.querySelectorAll("select, input").forEach((el) => {
+            el.addEventListener("change", calculatePrice);
+        });
+    
+        function calculatePrice() {
+            let panelType = document.querySelector("#panelType").value;
+            let panelQty = parseInt(document.querySelector("#panelQuantity").value) || 0;
+            let batteryType = document.querySelector("#batteryType").value;
+            let batteryQty = parseInt(document.querySelector("#batteryQuantity").value) || 0;
+            let kva = document.querySelector("#batteryKVA").value;
+    
+            let total = (panelPrices[panelType] * panelQty) + (batteryPrices[batteryType] * batteryQty) + kvaPrices[kva] + 500000;
+            let upfront = total * 0.3;
+    
+            document.querySelector("#totalPrice").textContent = total.toLocaleString();
+            document.querySelector("#upfrontPayment").textContent = upfront.toLocaleString();
         }
-    });
-
-    handler.openIframe();
-}
-
-        function logPayment(email, service, amount) {
-            fetch('/log-payment', {
+    
+        document.querySelector("#terms").addEventListener("change", (e) => {
+            document.querySelector("#payButton").disabled = !e.target.checked;
+        });
+    
+        document.querySelector("#payButton").addEventListener("click", () => {
+            let username = document.querySelector("#username").value;
+            let email = document.querySelector("#email").value;
+            let address = document.querySelector("#address").value;
+            let phone = document.querySelector("#phone").value;
+            let panelType = document.querySelector("#panelType").value;
+            let panelQty = document.querySelector("#panelQuantity").value;
+            let batteryType = document.querySelector("#batteryType").value;
+            let batteryQty = document.querySelector("#batteryQuantity").value;
+            let kva = document.querySelector("#batteryKVA").value;
+            let installationType = document.querySelector("#installationType").value;
+            let serviceType = document.querySelector("#serviceType").value;
+            let appointmentOrDelivery = serviceType === "ferdro" ? document.querySelector("#appointmentDate").value : document.querySelector("#deliveryDate").value;
+            let companyName = installationType === "company" ? document.querySelector("#companyName").value : "N/A";
+    
+            let totalPrice = (panelPrices[panelType] * panelQty) + (batteryPrices[batteryType] * batteryQty) + kvaPrices[kva] + 500000;
+            let upfrontPayment = totalPrice * 0.3;
+    
+            let emailBody = `
+                Username: ${username}
+                Email: ${email}
+                Address: ${address}
+                Phone: ${phone}
+                Installation Section: ${installationType}
+                Company Name: ${companyName}
+                Panel Type: ${panelType}
+                Panel Quantity: ${panelQty}
+                Battery Type: ${batteryType}
+                Battery Quantity: ${batteryQty}
+                Battery KVA: ${kva}
+                Service Type: ${serviceType}
+                Appointment/Delivery Date: ${appointmentOrDelivery}
+                Total Cost: ₦${totalPrice.toLocaleString()}
+                30% Upfront Payment: ₦${upfrontPayment.toLocaleString()}
+            `;
+    
+            // Send Email to Admin and User
+            sendEmail(email, "Payment Confirmation", emailBody);
+            sendEmail("admin@ferdroenergy.com", "New Payment Received", emailBody);
+    
+            // Proceed to Paystack Payment
+            payWithPaystack(username, email, phone, upfrontPayment);
+        });
+    
+        function sendEmail(to, subject, message) {
+            fetch('/send-email', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, service, amount })
-            });
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ to, subject, message })
+            }).then(response => response.json())
+              .then(data => console.log("Email Sent:", data))
+              .catch(error => console.error("Error sending email:", error));
         }
+    
+        function payWithPaystack(name, email, phone, amount) {
+            let handler = PaystackPop.setup({
+                key: "pk_live_e9ebf50a308430f8fc21876b24fa10fed5645603", // Replace with your Paystack public key
+                email: email,
+                amount: amount * 100, // Convert to kobo
+                currency: "NGN",
+                ref: "FERDRO_" + Math.floor((Math.random() * 1000000000) + 1),
+                metadata: {
+                    custom_fields: [
+                        { display_name: "Customer Name", variable_name: "customer_name", value: name },
+                        { display_name: "Phone Number", variable_name: "phone_number", value: phone }
+                    ]
+                },
+                callback: function(response) {
+                    alert("Payment successful! Reference: " + response.reference);
+                },
+                onClose: function() {
+                    alert("Transaction was not completed, window closed.");
+                }
+            });
+            handler.openIframe();
+        }
+    
+        document.addEventListener("DOMContentLoaded", function() {
+            let solarType = localStorage.getItem("solarType");
+            let solarQuantity = localStorage.getItem("solarQuantity");
+            let batteryType = localStorage.getItem("batteryType");
+            let batteryQuantity = localStorage.getItem("batteryQuantity");
+            let batteryKVA = localStorage.getItem("batteryKVA");
+            let serviceType = localStorage.getItem("serviceType");
+            let appointmentDate = localStorage.getItem("appointmentDate");
+            let deliveryDate = localStorage.getItem("deliveryDate");
+            let homeAddress = localStorage.getItem("homeAddress");
+            let phoneNumber = localStorage.getItem("phoneNumber");
+            let totalPrice = localStorage.getItem("totalPrice");
+    
+            document.getElementById("summarySolarType").innerText = solarType;
+            document.getElementById("summarySolarQuantity").innerText = solarQuantity;
+            document.getElementById("summaryBatteryType").innerText = batteryType;
+            document.getElementById("summaryBatteryQuantity").innerText = batteryQuantity;
+            document.getElementById("summaryBatteryKVA").innerText = batteryKVA;
+            document.getElementById("summaryServiceType").innerText = serviceType;
+            document.getElementById("summaryAppointmentDate").innerText = appointmentDate || "N/A";
+            document.getElementById("summaryDeliveryDate").innerText = deliveryDate || "N/A";
+            document.getElementById("summaryHomeAddress").innerText = homeAddress;
+            document.getElementById("summaryPhoneNumber").innerText = phoneNumber;
+            document.getElementById("summaryTotalPrice").innerText = totalPrice;
+        });
+    });
     </script>
 </body>
 </html>
