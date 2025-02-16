@@ -3,212 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Services</title>
-    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <title>Solar Installation | FERDRO ENERGY</title>
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
-    
-    header {
-        background-color: #004085;
-        color: white;
-        text-align: center;
-        padding: 20px;
-    }
-    
-    main {
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 20px;
-    }
-    
-    .service-section {
-        background: white;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 8px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-    
-    .service-section img {
-        width: 100%;
-        max-height: 300px;
-        object-fit: cover;
-        border-radius: 8px;
-    }
-    
-    .service-section h2 {
-        color: #004085;
-    }
-    
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        text-align: left;
-    }
-    
-    label {
-        font-weight: bold;
-    }
-    
-    select {
-        padding: 8px;
-        font-size: 16px;
-    }
-    
-    button {
-        background-color: #ff6600;
-        color: white;
-        padding: 10px;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        border-radius: 5px;
-    }
-    
-    button:hover {
-        background-color: #cc5500;
-    }
-</style>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FERDRO ENERGY Services</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://js.paystack.co/v1/inline.js"></script>
-</head>
-<body>
-    <header>
-        <h1>Thank You for Choosing FERDRO ENERGY</h1>
-        <p>What services would you like us to offer?</p>
-    </header>
-
-    <!-- Solar Installation Section -->
-    <section class="service-section">
-        <img src="#" alt="Solar Installation">
-        <h2>Solar Installation</h2>
-        <form id="solar-installation-form">
-            <label for="installationType">Type of Installation:</label>
-            <select id="installationType">
-                <option value="home">Solar Installation at Home</option>
-                <option value="site">Solar Installation on Site</option>
-                <option value="company">Solar Installation in a Company</option>
-            </select>
-
-            <label for="solarPackage">Package:</label>
-            <select id="solarPackage">
-                <option value="100">14KVA – 18 panels – ₦100</option>
-                <option value="1500000">12KVA – 15 panels – ₦1,500,000</option>
-                <option value="500000">4KVA – 3 panels – ₦500,000</option>
-                <option value="300000">2KVA – 3 panels – ₦300,000</option>
-            </select>
-
-            <button type="button" onclick="payWithPaystack('solar-installation-form')">Pay Now</button>
-        </form>
-    </section>
-
-    <!-- Solar Auditing (QA/QC) Section -->
-    <section class="service-section">
-        <img src="#" alt="Solar Auditing">
-        <h2>Solar Auditing (QA/QC)</h2>
-        <form id="solar-auditing-form">
-            <label for="auditType">Type of Installation:</label>
-            <select id="auditType">
-                <option value="home">Solar Installation at Home</option>
-                <option value="site">Solar Installation on Site</option>
-                <option value="company">Solar Installation in a Company</option>
-            </select>
-
-            <label for="auditPackage">Package:</label>
-            <select id="auditPackage">
-                <option value="700000">QA – ₦700,000</option>
-                <option value="500000">QC – ₦500,000</option>
-            </select>
-
-            <button type="button" onclick="payWithPaystack('solar-auditing-form')">Pay Now</button>
-        </form>
-    </section>
-
-    <!-- Consultancy Section -->
-    <section class="service-section">
-        <h2>Consultancy</h2>
-        <form id="consultancy-form">
-            <label for="consultancyType">Consultancy Service:</label>
-            <select id="consultancyType">
-                <option value="500000">Full Consultancy – ₦500,000</option>
-                <option value="350000">Aspect Consultancy – ₦350,000</option>
-            </select>
-
-            <button type="button" onclick="payWithPaystack('consultancy-form')">Pay Now</button>
-        </form>
-    </section>
-
-    <script>
-        function payWithPaystack(formId) {
-    let form = document.getElementById(formId);
-    let email = prompt("Enter your email for payment:");
-    
-    // Ensure a package is selected
-    let amountElement = form.querySelector("select:nth-of-type(2)");
-    if (!amountElement) {
-        alert("Please select a package.");
-        return;
-    }
-
-    let amount = amountElement.value; // Get selected package price
-    if (!amount) {
-        alert("Transaction amount not set. Please select a package.");
-        return;
-    }
-
-    let serviceType = form.parentNode.querySelector("h2").textContent; // Get section title (service name)
-
-    let handler = PaystackPop.setup({
-        key: 'pk_live_e9ebf50a308430f8fc21876b24fa10fed5645603',   // Replace with your Paystack public key
-        email: email,
-        amount: parseInt(amount) * 100, // Convert to kobo
-        currency: "NGN",
-        ref: "FERDRO-" + Math.floor((Math.random() * 1000000000) + 1),
-        metadata: {
-            custom_fields: [
-                {
-                    display_name: "Service",
-                    variable_name: "service",
-                    value: serviceType
-                }
-            ]
-        },
-        callback: function(response) {
-            alert("Payment successful! Transaction ref: " + response.reference);
-            logPayment(email, serviceType, amount); // Send to backend
-             window.location.href = "userpayment.html"; // Redirect users to user payment(userpayment.html) details page
-        },
-        onClose: function() {
-            alert("Transaction cancelled");
-        }
-    });
-
-    handler.openIframe();
+   body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
+.container {
+    width: 50%;
+    margin: 50px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h2 { text-align: center; }
+label { display: block; margin-top: 10px; }
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+button {
+    width: 100%;
+    padding: 10px;
+    background: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+button:disabled { background: gray; cursor: not-allowed; }
+</style>
+<body>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Solar Installation Service</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <h2>Solar Installation Service</h2>
+            
+            <label for="installationType">Select Section:</label>
+            <select id="installationType">
+                <option value="home">Home</option>
+                <option value="company">Company</option>
+                <option value="site">Site</option>
+            </select>
+    
+            <div id="formSection">
+                <label for="username">Full Name:</label>
+<input type="text" id="username" placeholder="Enter your full name">
 
-        function logPayment(email, service, amount) {
-            fetch('/log-payment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, service, amount })
-            });
+<label for="email">Email:</label>
+<input type="email" id="email" placeholder="Enter your email">
+
+
+                <label for="panelType">Solar Panel Type:</label>
+                <select id="panelType">
+                    <option value="mono">Monocrystalline - ₦250,000</option>
+                    <option value="poly">Polycrystalline - ₦180,000</option>
+                    <option value="thin-film">Thin-Film - ₦150,000</option>
+                    <option value="bifacial">Bifacial - ₦280,000</option>
+                    <option value="perc">PERC - ₦300,000</option>
+                </select>
+    
+                <label for="panelQuantity">Solar Panel Quantity (1-10/15):</label>
+                <input type="number" id="panelQuantity" min="1" max="10">
+    
+                <label for="batteryType">Battery Type:</label>
+                <select id="batteryType">
+                    <option value="lithium">Lithium-ion - ₦350,000</option>
+                    <option value="agm">AGM - ₦250,000</option>
+                    <option value="gel">Gel - ₦220,000</option>
+                </select>
+    
+                <label for="batteryQuantity">Battery Quantity (1-6/9):</label>
+                <input type="number" id="batteryQuantity" min="1" max="6">
+    
+                <label for="batteryKVA">Battery KVA:</label>
+                <select id="batteryKVA">
+                    <option value="2.5">2.5KVA - ₦400,000</option>
+                    <option value="5">5KVA - ₦750,000</option>
+                    <option value="7.5">7.5KVA - ₦1,200,000</option>
+                </select>
+    
+                <label for="serviceType">Service Type:</label>
+                <select id="serviceType">
+                    <option value="ferdro">Ferdro Service</option>
+                    <option value="self">Self-Service</option>
+                </select>
+                <div id="companyNameField" style="display: none;">
+                    <label for="companyName">Company Name:</label>
+                    <input type="text" id="companyName" name="companyName" placeholder="Enter company name">
+                </div>
+                <div id="serviceDetails"></div>
+    
+                <h3>Total Cost: ₦<span id="totalPrice">0</span></h3>
+                <h4>30% Upfront Payment: ₦<span id="upfrontPayment">0</span></h4>
+    
+                <label>
+                    <input type="checkbox" id="terms"> I agree to pay 30% as a commitment fee.
+                </label>
+    
+                <button id="payButton" disabled>Pay 30% Upfront</button>
+            </div>
+        </div>
+    
+        
+    </body>
+    </html>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        const panelPrices = { mono: 250000, poly: 180000, "thin-film": 150000, bifacial: 280000, perc: 300000 };
+        const batteryPrices = { lithium: 350000, agm: 250000, gel: 220000 };
+        const kvaPrices = { "2.5": 400000, "5": 750000, "7.5": 1200000 };
+    
+        document.querySelector("#serviceType").addEventListener("change", (e) => {
+            let details = document.querySelector("#serviceDetails");
+            details.innerHTML = e.target.value === "ferdro" ? 
+                `<label>Date of Appointment: <input type="date" id="appointmentDate"></label>
+                 <label>Home Address: <input type="text" id="address"></label>
+                 <label>Phone Number: <input type="tel" id="phone"></label>` :
+                `<label>Delivery Date: <input type="date" id="deliveryDate"></label>
+                 <label>Home Address: <input type="text" id="address"></label>
+                 <label>Phone Number: <input type="tel" id="phone"></label>`;
+        });
+    
+        document.querySelector("#installationType").addEventListener("change", (e) => {
+            let installationType = e.target.value;
+            let panelQty = document.querySelector("#panelQuantity");
+            let batteryQty = document.querySelector("#batteryQuantity");
+            let companyNameField = document.querySelector("#companyNameField");
+    
+            if (installationType === "company") {
+                panelQty.setAttribute("max", "15");
+                batteryQty.setAttribute("max", "9");
+                companyNameField.style.display = "block"; // Show Company Name field
+            } else {
+                panelQty.setAttribute("max", "10");
+                batteryQty.setAttribute("max", "6");
+                companyNameField.style.display = "none"; // Hide Company Name field
+            }
+        });
+    
+        document.querySelectorAll("select, input").forEach((el) => {
+            el.addEventListener("change", calculatePrice);
+        });
+    
+        function calculatePrice() {
+            let panelType = document.querySelector("#panelType").value;
+            let panelQty = parseInt(document.querySelector("#panelQuantity").value) || 0;
+            let batteryType = document.querySelector("#batteryType").value;
+            let batteryQty = parseInt(document.querySelector("#batteryQuantity").value) || 0;
+            let kva = document.querySelector("#batteryKVA").value;
+    
+            let total = (panelPrices[panelType] * panelQty) + (batteryPrices[batteryType] * batteryQty) + kvaPrices[kva] + 500000;
+            let upfront = total * 0.3;
+    
+            document.querySelector("#totalPrice").textContent = total.toLocaleString();
+            document.querySelector("#upfrontPayment").textContent = upfront.toLocaleString();
         }
+    
+        document.querySelector("#terms").addEventListener("change", (e) => {
+            document.querySelector("#payButton").disabled = !e.target.checked;
+        });
+    
+        document.querySelector("#payButton").addEventListener("click", () => {
+            let username = document.querySelector("#username").value;
+            let email = document.querySelector("#email").value;
+            let address = document.querySelector("#address").value;
+            let phone = document.querySelector("#phone").value;
+            let panelType = document.querySelector("#panelType").value;
+            let panelQty = document.querySelector("#panelQuantity").value;
+            let batteryType = document.querySelector("#batteryType").value;
+            let batteryQty = document.querySelector("#batteryQuantity").value;
+            let kva = document.querySelector("#batteryKVA").value;
+            let installationType = document.querySelector("#installationType").value;
+            let serviceType = document.querySelector("#serviceType").value;
+            let appointmentOrDelivery = serviceType === "ferdro" ? document.querySelector("#appointmentDate").value : document.querySelector("#deliveryDate").value;
+            let companyName = installationType === "company" ? document.querySelector("#companyName").value : "N/A";
+    
+            let totalPrice = (panelPrices[panelType] * panelQty) + (batteryPrices[batteryType] * batteryQty) + kvaPrices[kva] + 500000;
+            let upfrontPayment = totalPrice * 0.3;
+    
+            let emailBody = `
+                Username: ${username}
+                Email: ${email}
+                Address: ${address}
+                Phone: ${phone}
+                Installation Section: ${installationType}
+                Company Name: ${companyName}
+                Panel Type: ${panelType}
+                Panel Quantity: ${panelQty}
+                Battery Type: ${batteryType}
+                Battery Quantity: ${batteryQty}
+                Battery KVA: ${kva}
+                Service Type: ${serviceType}
+                Appointment/Delivery Date: ${appointmentOrDelivery}
+                Total Cost: ₦${totalPrice.toLocaleString()}
+                30% Upfront Payment: ₦${upfrontPayment.toLocaleString()}
+            `;
+    
+            // Send Email to Admin and User
+            sendEmail(email, "Payment Confirmation", emailBody);
+            sendEmail("admin@ferdroenergy.com", "New Payment Received", emailBody);
+    
+            // Proceed to Paystack Payment
+            payWithPaystack(username, email, phone, upfrontPayment);
+        });
+    
+        function sendEmail(to, subject, message) {
+            fetch('/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ to, subject, message })
+            }).then(response => response.json())
+              .then(data => console.log("Email Sent:", data))
+              .catch(error => console.error("Error sending email:", error));
+        }
+    
+        function payWithPaystack(name, email, phone, amount) {
+            let handler = PaystackPop.setup({
+                key: "pk_test_37148156d3759189a11462a9673b8225525a3dfd", // Replace with your Paystack public key
+                email: email,
+                amount: amount * 100, // Convert to kobo
+                currency: "NGN",
+                ref: "FERDRO_" + Math.floor((Math.random() * 1000000000) + 1),
+                metadata: {
+                    custom_fields: [
+                        { display_name: "Customer Name", variable_name: "customer_name", value: name },
+                        { display_name: "Phone Number", variable_name: "phone_number", value: phone }
+                    ]
+                },
+                callback: function(response) {
+                    alert("Payment successful! Reference: " + response.reference);
+                },
+                onClose: function() {
+                    alert("Transaction was not completed, window closed.");
+                }
+            });
+            handler.openIframe();
+        }
+    
+        document.addEventListener("DOMContentLoaded", function() {
+            let solarType = localStorage.getItem("solarType");
+            let solarQuantity = localStorage.getItem("solarQuantity");
+            let batteryType = localStorage.getItem("batteryType");
+            let batteryQuantity = localStorage.getItem("batteryQuantity");
+            let batteryKVA = localStorage.getItem("batteryKVA");
+            let serviceType = localStorage.getItem("serviceType");
+            let appointmentDate = localStorage.getItem("appointmentDate");
+            let deliveryDate = localStorage.getItem("deliveryDate");
+            let homeAddress = localStorage.getItem("homeAddress");
+            let phoneNumber = localStorage.getItem("phoneNumber");
+            let totalPrice = localStorage.getItem("totalPrice");
+    
+            document.getElementById("summarySolarType").innerText = solarType;
+            document.getElementById("summarySolarQuantity").innerText = solarQuantity;
+            document.getElementById("summaryBatteryType").innerText = batteryType;
+            document.getElementById("summaryBatteryQuantity").innerText = batteryQuantity;
+            document.getElementById("summaryBatteryKVA").innerText = batteryKVA;
+            document.getElementById("summaryServiceType").innerText = serviceType;
+            document.getElementById("summaryAppointmentDate").innerText = appointmentDate || "N/A";
+            document.getElementById("summaryDeliveryDate").innerText = deliveryDate || "N/A";
+            document.getElementById("summaryHomeAddress").innerText = homeAddress;
+            document.getElementById("summaryPhoneNumber").innerText = phoneNumber;
+            document.getElementById("summaryTotalPrice").innerText = totalPrice;
+        });
+    });
     </script>
 </body>
 </html>
