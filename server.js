@@ -39,8 +39,15 @@ const Payment = mongoose.model("Payment", new mongoose.Schema({
     name: String,
     service: String,
     amount: Number,
+    paidAmount: Number,
+    balanceAmount: Number,
     reference: String,
     email: String,
+    solarPanelType: String,
+    solarPanelQuantity: Number,
+    batteryType: String,
+    batteryQuantity: Number,
+    batteryKVA: String,
     details: Object,
     date: { type: Date, default: Date.now }
 }));
@@ -54,7 +61,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// *Registration Route*
+// Registration Route
 app.post("/register", async (req, res) => {
     const { name, email, password } = req.body;
     try {
@@ -69,7 +76,7 @@ app.post("/register", async (req, res) => {
             from: "onoskelvin100@gmail.com",
             to: email,
             subject: "Welcome to FERDRO Energy!",
-            text: `Hi ${name},\n\nThank you for registering at FERDRO Energy. Your account has been successfully created. Please navigate to the dashboard and select the service you would like us to offer you, An admin will be readily available to attend to you\n\n You can also state your request via this mail trail, an admin is also ready to attend to you via mail     .\n\nBest regards,\nFERDRO Energy Team`
+            text: `Hi ${name},\n\nThank you for registering at FERDRO Energy. Your account has been successfully created. \n\ Please navigate to the dashboard and select the service you would like us to offer you, An admin will be readily available to attend to you\n\n You can also state your request via this mail trail, an admin is also ready to attend to you via mail \n\nBest regards,\nFERDRO Energy Team`
         });
 
         res.status(201).json({ message: "Registration successful! Check your email." });
@@ -79,7 +86,7 @@ app.post("/register", async (req, res) => {
     }
 });
 
-// *Login Route*
+// Login Route
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -94,43 +101,31 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// *Get All Users (Admin Page)*
-app.get("/api/users", async (req, res) => {
-    try {
-        res.json(await User.find({}, "email username createdAt _id"));
-    } catch (error) {
-        console.error("User Fetch Error:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
-
-// *Delete User Route*
-app.delete("/users/:id", async (req, res) => {
-    try {
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-            return res.status(400).json({ message: "Invalid user ID" });
-        }
-        await User.findByIdAndDelete(req.params.id);
-        res.json({ message: "User deleted successfully" });
-    } catch (error) {
-        console.error("User Delete Error:", error);
-        res.status(500).json({ message: "Server error" });
-    }
-});
-
-// *Paystack Webhook (Dashboard Service)*
+// Paystack Webhook (Dashboard Service)
 app.post('/paystack/webhook', async (req, res) => {
     const event = req.body;
     console.log('Webhook Event:', event);
 
     if (event.event === "charge.success") {
+        const details = event.data.metadata;
+        const totalAmount = details.totalAmount;
+        const paidAmount = event.data.amount / 100; // Convert from kobo to naira
+        const balanceAmount = totalAmount - paidAmount;
+
         const paymentData = {
             name: `${event.data.customer.first_name} ${event.data.customer.last_name}`,
             email: event.data.customer.email,
-            service: event.data.metadata.serviceType,
-            amount: event.data.amount / 100, // Convert kobo to naira
+            service: details.serviceType,
+            amount: totalAmount,
+            paidAmount: paidAmount,
+            balanceAmount: balanceAmount,
             reference: event.data.reference,
-            details: event.data.metadata,
+            solarPanelType: details.solarPanelType,
+            solarPanelQuantity: details.solarPanelQuantity,
+            batteryType: details.batteryType,
+            batteryQuantity: details.batteryQuantity,
+            batteryKVA: details.batteryKVA,
+            details: details,
             date: new Date()
         };
 
@@ -144,7 +139,7 @@ app.post('/paystack/webhook', async (req, res) => {
                 from: "onoskelvin100@gmail.com",
                 to: paymentData.email,
                 subject: "Payment Confirmation - FERDRO Energy",
-                text: `Dear ${paymentData.name},\n\nYour payment of ₦${paymentData.amount} for ${paymentData.service} was successful.\n\nBest regards,\nFERDRO Energy Team`
+                text: `Dear ${paymentData.name},\n\nYour payment of ₦${paymentData.paidAmount} for ${paymentData.service} was successful.\n\nService Details:\n- Solar Panel: ${paymentData.solarPanelType} (Qty: ${paymentData.solarPanelQuantity})\n- Battery: ${paymentData.batteryType} (Qty: ${paymentData.batteryQuantity}, KVA: ${paymentData.batteryKVA})\n- Total Service Cost: ₦${paymentData.amount}\n- Amount Paid: ₦${paymentData.paidAmount}\n- Balance Due: ₦${paymentData.balanceAmount}\n\nBest regards,\nFERDRO Energy Team`
             });
 
             // Send Payment Details to Admin
@@ -152,7 +147,7 @@ app.post('/paystack/webhook', async (req, res) => {
                 from: "onoskelvin100@gmail.com",
                 to: "onoskelvin100@gmail.com",
                 subject: "New Payment Received",
-                text: `New payment received:\n\nName: ${paymentData.name}\nEmail: ${paymentData.email}\nService: ${paymentData.service}\nAmount: ₦${paymentData.amount}\nReference: ${paymentData.reference}\nDetails: ${JSON.stringify(paymentData.details, null, 2)}`
+                text: `New payment received:\n\nName: ${paymentData.name}\nEmail: ${paymentData.email}\nService: ${paymentData.service}\nTotal Amount: ₦${paymentData.amount}\nAmount Paid: ₦${paymentData.paidAmount}\nBalance Due: ₦${paymentData.balanceAmount}\nSolar Panel: ${paymentData.solarPanelType} (Qty: ${paymentData.solarPanelQuantity})\nBattery: ${paymentData.batteryType} (Qty: ${paymentData.batteryQuantity}, KVA: ${paymentData.batteryKVA})\nReference: ${paymentData.reference}`
             });
 
         } catch (error) {
@@ -162,7 +157,7 @@ app.post('/paystack/webhook', async (req, res) => {
     res.sendStatus(200);
 });
 
-// *Fetch Payments*
+// Fetch Payments
 app.get('/api/payments', async (req, res) => {
     try {
         res.json(await Payment.find());
@@ -171,7 +166,7 @@ app.get('/api/payments', async (req, res) => {
     }
 });
 
-// *Fetch Paystack Transactions*
+// Fetch Paystack Transactions
 app.get('/fetch-payments', async (req, res) => {
     try {
         const response = await axios.get('https://api.paystack.co/transaction', {
@@ -195,5 +190,5 @@ app.get('/fetch-payments', async (req, res) => {
     }
 });
 
-// *Start Server*
+// Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
