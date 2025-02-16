@@ -69,7 +69,7 @@ app.post("/register", async (req, res) => {
             from: "onoskelvin100@gmail.com",
             to: email,
             subject: "Welcome to FERDRO Energy!",
-            text: `Hi ${name},\n\nThank you for registering. An admin is available to attend to you.\n\nBest regards,\nFERDRO Energy Team`
+            text: `Hi ${name},\n\nThank you for registering at FERDRO Energy. Your account has been successfully created. Please navigate to the dashboard and select the service you would like us to offer you, An admin will be readily available to attend to you\n\n You can also state your request via this mail trail, an admin is also ready to attend to you via mail     .\n\nBest regards,\nFERDRO Energy Team`
         });
 
         res.status(201).json({ message: "Registration successful! Check your email." });
