@@ -54,10 +54,10 @@ const Payment = mongoose.model("Payment", new mongoose.Schema({
 
 // Nodemailer Configuration
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: process.env.EMAIL_SERVICE,
     auth: {
-        user: "onoskelvin100@gmail.com",
-        pass: "utxi obvq juff gtnl"
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 });
 
