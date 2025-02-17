@@ -3,26 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Service</title>
-    <style>
-        body {
+    <title>Solar Equipment Purchase/Installation</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+<style>
+    header{
+        background:black ;
+        color: aliceblue;
+    }
+    body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, PINK, #7e38ad); /* Classy green/blue gradient */
             margin: 0;
             padding: 0;
+
         }
         .container {
-            width: 50%;
+            width: 75%;
             margin: auto;
             background: white;
             padding: 20px;
             box-shadow: 0px 0px 10px #ccc;
-            margin-top: 50px;
+            margin-top: 6%;
+            border-radius: 25px;
+           
+        
         }
         label {
             font-weight: bold;
             display: block;
             margin-top: 10px;
+            border-radius: 55%;
+        
         }
         input, select {
             width: 100%;
@@ -42,175 +55,221 @@
             background: #ccc;
             cursor: not-allowed;
         }
-    </style>
-</head>
+
+
+fieldset {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom:0;
+}
+</style>
 <body>
+    <header>
+        <h1>Thank You for Choosing REHOSYS</h1>
+    </header>
     <div class="container">
-        <h2>Service Payment</h2>
+        <h1>Solar Equipment Purchase/Installation Form</h1>
+        <form id="solarForm">
+            <!-- User Details -->
+            <fieldset>
+                <legend>User Details</legend>
+                <label for="username">Name:</label>
+                <input type="text" id="username" name="username" required>
 
-        <label for="section">Select Section:</label>
-        <select id="section">
-            <option value="home">Home</option>
-            <option value="company">Company</option>
-            <option value="site">Site</option>
-        </select>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
 
-        <label for="panelType">Solar Panel Type:</label>
-        <select id="panelType">
-            <option value="150000">Mono 250W - ₦150,000</option>
-            <option value="180000">Poly 400W - ₦180,000</option>
-            <option value="210000">Flexible 500W - ₦210,000</option>
-            <option value="85000">Sunshine 350W - ₦85,000</option>
-            <option value="75000">Trina 340W - ₦75,000</option>
-            <option value="70000">Unilite 300W - ₦70,000</option>
-            <option value="60000">Crown Micro 250W - ₦60,000</option>
-            <option value="55000">Sunshine 200W - ₦55,000</option>
-            <option value="50000">Unilite 200W - ₦50,000</option>
-            <option value="45000">Crown Micro 150W - ₦45,000</option>
-            <option value="40000">Rubitec 200W - ₦40,000</option>
-            <option value="35000">Talker Energy 140W - ₦35,000</option>
-            <option value="30000">Su-Kam 125W - ₦30,000</option>
-        </select>
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required>
 
-        </select>
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </fieldset>
 
-        <label for="panelQty">Quantity:</label>
-        <input type="number" id="panelQty" min="1" max="10" value="1">
+            <!-- Equipment Selection -->
+            <fieldset>
+                <legend>Equipment Selection</legend>
+                <label for="panelType">Solar Panel Type:</label>
+                <select id="panelType" name="panelType" required>
+                    <option value="" disabled selected>Select Panel Type</option>
+                    <option value="Mono-crystalline" data-price="550000">Mono-crystalline - ₦550,000</option>
+                    <option value="Poly-crystalline" data-price="450000">Poly-crystalline - ₦450,000</option>
+                    <option value="Thin-film" data-price="350000">Thin-film - ₦350,000</option>
+                </select>
 
-        <label for="batteryType">Battery Type:</label>
-        <select id="batteryType">
-            <option value="250000">AGM 200Ah - ₦250,000</option>
-            <option value="280000">Lithium 10kVA - ₦280,000</option>
-            <option value="280000">Lithium 10kVA - ₦280,000</option>
-            <option value="280000">Lithium 10kVA - ₦280,000</option>
-            
-        </select>
+                <label for="panelQuantity">Solar Panel Quantity:</label>
+                <input type="number" id="panelQuantity" name="panelQuantity" min="1" value="1" required>
 
-        <label for="batteryQty">Battery Quantity:</label>
-        <input type="number" id="batteryQty" min="1" max="6" value="1">
+                <label for="batteryType">Battery Type:</label>
+                <select id="batteryType" name="batteryType" required>
+                    <option value="" disabled selected>Select Battery Type</option>
+                    <option value="Lithium-ion" data-price="750000">Lithium-ion - ₦750,000</option>
+                    <option value="Lead-acid" data-price="500000">Lead-acid - ₦500,000</option>
+                    <option value="Nickel-cadmium" data-price="650000">Nickel-cadmium - ₦650,000</option>
+                </select>
 
-        <label for="batteryKVA">Battery KVA:</label>
-        <select id="batteryKVA">
-            <option value="5kva">5 kVA</option>
-            <option value="10kva">10 kVA</option>
-            <option value="15kva">15 kVA</option>
-        </select>
+                <label for="batteryQuantity">Battery Quantity:</label>
+                <input type="number" id="batteryQuantity" name="batteryQuantity" min="1" value="1" required>
 
-        <label for="serviceType">Service Type:</label>
-        <select id="serviceType">
-            <option value="ferdro">Ferdro Services</option>
-            <option value="self">Self-Service</option>
-        </select>
+                <label for="batteryKVA">Battery KVA:</label>
+                <input type="number" id="batteryKVA" name="batteryKVA" min="1" value="1" required>
+            </fieldset>
 
-        <div id="appointmentSection">
-            <label for="appointmentDate">Appointment Date:</label>
-            <input type="date" id="appointmentDate">
-        </div>
+            <!-- Service Details -->
+            <fieldset>
+                <legend>Service Details</legend>
+                <label for="serviceType">Service Type:</label>
+                <select id="serviceType" name="serviceType" required>
+                    <option value="" disabled selected>Select Service Type</option>
+                    <option value="Purchase">Purchase</option>
+                    <option value="Installation">Installation</option>
+                </select>
 
-        <div id="deliverySection" style="display: none;">
-            <label for="deliveryDate">Delivery Date:</label>
-            <input type="date" id="deliveryDate">
-        </div>
+                <div id="installationDetails" style="display: none;">
+                    <label for="installationType">Installation Type:</label>
+                    <select id="installationType" name="installationType">
+                        <option value="" disabled selected>Select Installation Type</option>
+                        <option value="Home">Home Installation</option>
+                        <option value="Company">Company Installation</option>
+                    </select>
 
-        <label for="address">Address:</label>
-        <input type="text" id="address">
+                    <div id="companyNameField" style="display: none;">
+                        <label for="companyName">Company Name:</label>
+                        <input type="text" id="companyName" name="companyName">
+                    </div>
 
-        <label for="phone">Phone Number:</label>
-        <input type="text" id="phone">
+                    <label for="serviceOption">Service Option:</label>
+                    <select id="serviceOption" name="serviceOption">
+                        <option value="" disabled selected>Select Service Option</option>
+                        <option value="Ferdro Service">Ferdro Service</option>
+                        <option value="Self-Service">Self-Service (-25%)</option>
+                    </select>
+                </div>
+            </fieldset>
 
-        <p><strong>Total Cost: ₦<span id="totalCost">0</span></strong></p>
-        <p><strong>Pay 30% Now: ₦<span id="payNow">0</span></strong></p>
+            <!-- Pricing and Terms -->
+            <fieldset>
+                <legend>Pricing and Terms</legend>
+                <p><strong>Total Price:</strong> ₦<span id="totalPrice">0</span></p>
+                <p><strong>Amount to Pay Now:</strong> ₦<span id="payNowAmount">0</span></p>
 
-        <input type="checkbox" id="terms">
-        <label for="terms">I accept the terms & conditions</label>
+                <label>
+                    <input type="checkbox" id="terms" name="terms">
+                    I agree to the <a href="#">terms and conditions</a>
+                </label>
+            </fieldset>
 
-        <button id="payBtn" disabled>Pay 30% Upfront</button>
+            <button type="submit" id="payNowButton" disabled>Pay Now</button>
+        </form>
     </div>
 
-    <script src="https://js.paystack.co/v1/inline.js"></script>
     <script>
-        const section = document.getElementById("section");
-        const panelType = document.getElementById("panelType");
-        const panelQty = document.getElementById("panelQty");
-        const batteryType = document.getElementById("batteryType");
-        const batteryQty = document.getElementById("batteryQty");
-        const batteryKVA = document.getElementById("batteryKVA");
-        const serviceType = document.getElementById("serviceType");
-        const appointmentSection = document.getElementById("appointmentSection");
-        const deliverySection = document.getElementById("deliverySection");
-        const appointmentDate = document.getElementById("appointmentDate");
-        const deliveryDate = document.getElementById("deliveryDate");
-        const address = document.getElementById("address");
-        const phone = document.getElementById("phone");
-        const totalCostDisplay = document.getElementById("totalCost");
-        const payNowDisplay = document.getElementById("payNow");
-        const payBtn = document.getElementById("payBtn");
-        const terms = document.getElementById("terms");
+        document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("solarForm");
+    const panelType = document.getElementById("panelType");
+    const panelQuantity = document.getElementById("panelQuantity");
+    const batteryType = document.getElementById("batteryType");
+    const batteryQuantity = document.getElementById("batteryQuantity");
+    const serviceType = document.getElementById("serviceType");
+    const installationDetails = document.getElementById("installationDetails");
+    const installationType = document.getElementById("installationType");
+    const companyNameField = document.getElementById("companyNameField");
+    const serviceOption = document.getElementById("serviceOption");
+    const totalPriceElem = document.getElementById("totalPrice");
+    const payNowAmountElem = document.getElementById("payNowAmount");
+    const termsCheckbox = document.getElementById("terms");
+    const payNowButton = document.getElementById("payNowButton");
 
-        function updatePrice() {
-            let total = (parseInt(panelType.value) * parseInt(panelQty.value)) +
-                        (parseInt(batteryType.value) * parseInt(batteryQty.value));
-            let payNow = Math.floor(total * 0.3);
-            totalCostDisplay.innerText = total.toLocaleString();
-            payNowDisplay.innerText = payNow.toLocaleString();
+    let totalPrice = 0;
+
+    function updatePrice() {
+        let panelPrice = parseInt(panelType.selectedOptions[0].getAttribute("data-price")) || 0;
+        let batteryPrice = parseInt(batteryType.selectedOptions[0].getAttribute("data-price")) || 0;
+        let panelQty = parseInt(panelQuantity.value) || 1;
+        let batteryQty = parseInt(batteryQuantity.value) || 1;
+
+        totalPrice = (panelPrice * panelQty) + (batteryPrice * batteryQty) ;
+       
+
+        // Check if Self-Service is selected
+        if (serviceOption.value === "Self-Service") {
+            totalPrice *= 0.75; // Apply 25% discount
         }
 
-        panelType.addEventListener("change", updatePrice);
-        panelQty.addEventListener("input", updatePrice);
-        batteryType.addEventListener("change", updatePrice);
-        batteryQty.addEventListener("input", updatePrice);
+        // If installation is selected, enforce 30% upfront payment
+        let payNowAmount = serviceType.value === "Installation" ? totalPrice * 0.3 : totalPrice;
+
+        totalPriceElem.textContent = totalPrice.toLocaleString();
+        payNowAmountElem.textContent = payNowAmount.toLocaleString();
+    }
+
+    panelType.addEventListener("change", updatePrice);
+    panelQuantity.addEventListener("input", updatePrice);
+    batteryType.addEventListener("change", updatePrice);
+    batteryQuantity.addEventListener("input", updatePrice);
+    serviceOption.addEventListener("change", updatePrice);
+
+    serviceType.addEventListener("change", function () {
+        if (serviceType.value === "Installation") {
+            installationDetails.style.display = "block";
+        } else {
+            installationDetails.style.display = "none";
+        }
         updatePrice();
+    });
 
-        serviceType.addEventListener("change", () => {
-            if (serviceType.value === "ferdro") {
-                appointmentSection.style.display = "block";
-                deliverySection.style.display = "none";
-            } else {
-                appointmentSection.style.display = "none";
-                deliverySection.style.display = "block";
-            }
+    installationType.addEventListener("change", function () {
+        companyNameField.style.display = installationType.value === "Company" ? "block" : "none";
+    });
+
+    termsCheckbox.addEventListener("change", function () {
+        payNowButton.disabled = !termsCheckbox.checked;
+    });
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        let userData = {
+            username: document.getElementById("username").value,
+            email: document.getElementById("email").value,
+            address: document.getElementById("address").value,
+            phone: document.getElementById("phone").value,
+            panelType: panelType.value,
+            panelQuantity: panelQuantity.value,
+            batteryType: batteryType.value,
+            batteryQuantity: batteryQuantity.value,
+            batteryKVA: document.getElementById("batteryKVA").value,
+            serviceType: serviceType.value,
+            installationType: installationType.value,
+            companyName: document.getElementById("companyName").value,
+            serviceOption: serviceOption.value,
+            totalAmount: totalPrice,
+            upfrontPayment: totalPrice * 0.3,
+        };
+
+        payWithPaystack(userData);
+    });
+
+    function payWithPaystack(userData) {
+        let handler = PaystackPop.setup({
+            key: 'pk_test_37148156d3759189a11462a9673b8225525a3dfd', // Replace with your Paystack Public Key
+            email: userData.email,
+            amount: userData.upfrontPayment * 100, // Paystack uses kobo
+            currency: "NGN",
+            callback: function (response) {
+                alert("Payment Successful! Reference: " + response.reference);
+
+                // Redirect to userpayment.html with user data
+                let params = new URLSearchParams(userData).toString();
+                window.location.href = `userpayment.html?${params}`;
+            },
+            onClose: function () {
+                alert("Transaction Cancelled");
+            },
         });
-
-        terms.addEventListener("change", () => {
-            payBtn.disabled = !terms.checked;
-        });
-
-        payBtn.addEventListener("click", () => {
-            let email = prompt("Enter your email for receipt:");
-            let amount = parseInt(payNowDisplay.innerText.replace(/,/g, "")) * 100;
-
-            let handler = PaystackPop.setup({
-                key: 'pk_test_37148156d3759189a11462a9673b8225525a3dfd',
-                email: email,
-                amount: amount,
-                currency: "NGN",
-                callback: function(response) {
-                    alert("Payment Successful! Transaction Ref: " + response.reference);
-
-                    fetch("/send-email", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            email: email,
-                            phone: phone.value,
-                            address: address.value,
-                            section: section.value,
-                            batteryKVA: batteryKVA.value,
-                            serviceType: serviceType.value,
-                            totalCost: totalCostDisplay.innerText,
-                            payAmount: payNowDisplay.innerText
-                        })
-                    });
-
-                    location.href = "/thank-you";
-                },
-                onClose: function() {
-                    alert("Payment cancelled.");
-                }
-            });
-
-            handler.openIframe();
-        });
-    </script>
+        handler.openIframe();
+    }
+});
+    </script>>
 </body>
 </html>
