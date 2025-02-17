@@ -3,86 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Payments</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        table {
-            width: 80%;
-            margin: auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
+    <title>Payment Details</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+<style>
+
+</style>
 <body>
-
-    <h2>User Payments</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Service</th>
-                <th>Amount</th>
-                <th>Reference</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody id="paymentTable">
-            <!-- Payment details will be inserted here dynamically -->
-        </tbody>
-    </table>
+    <div class="container">
+        <h2>Payment Details</h2>
+        <div id="paymentDetails"></div>
+        <button onclick="window.print()">Print Receipt</button>
+    </div>
 
     <script>
-        // Function to fetch payments from the backend
-        async function fetchPayments() {
-            try {
-                const response = await fetch('https://ferdro-energy.onrender.com/fetch-payments'); // Ensure this matches your server.js route
-                const data = await response.json();
+        document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    const paymentDetailsContainer = document.getElementById("paymentDetails");
 
-                console.log("Received payments:", data); // Debugging
+    if (params.has("username")) {
+        const details = {
+            "Full Name": params.get("username"),
+            "Email": params.get("email"),
+            "Phone Number": params.get("phone"),
+            "Address": params.get("address"),
+            "Solar Panel Type": params.get("panelType"),
+            "Panel Quantity": params.get("panelQuantity"),
+            "Battery Type": params.get("batteryType"),
+            "Battery Quantity": params.get("batteryQuantity"),
+            "Service Type": params.get("serviceType"),
+            "Installation Type": params.get("installationType"),
+            "Company Name": params.get("companyName") || "N/A",
+            "Service Option": params.get("serviceOption"),
+            "Total Amount": `₦${parseFloat(params.get("totalAmount")).toLocaleString()}`,
+            "Upfront Payment (30%)": `₦${parseFloat(params.get("upfrontPayment")).toLocaleString()}`,
+            "Remaining Balance (70%)": `₦${(parseFloat(params.get("totalAmount")) * 0.7).toLocaleString()}`
+        };
 
-                const paymentTable = document.getElementById('paymentTable');
-                paymentTable.innerHTML = ""; // Clear table before inserting new data
-
-                // Check if payments exist
-                if (!data || !data.success || !data.payments || data.payments.length === 0) {
-                    paymentTable.innerHTML = "<tr><td colspan='5'>No payments found</td></tr>";
-                    return;
-                }
-
-                // Loop through payments and insert them into the table
-                data.payments.forEach(payment => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${payment.email || 'N/A'}</td>
-                        <td>${payment.service || 'N/A'}</td>
-                        <td>${(payment.amount / 100).toLocaleString()}</td> 
-                        <td>${payment.reference || 'N/A'}</td>
-                        <td>${payment.date ? new Date(payment.date).toLocaleString() : 'N/A'}</td>
-                    `;
-                    paymentTable.appendChild(row);
-                });
-
-            } catch (error) {
-                console.error("Error fetching payments:", error);
-                document.getElementById('paymentTable').innerHTML = "<tr><td colspan='5'>Error fetching payments</td></tr>";
-            }
+        let detailsHTML = "<ul>";
+        for (let key in details) {
+            detailsHTML += <li><strong>${key}:</strong> ${details[key]}</li>;
         }
+        detailsHTML += "</ul>";
 
-        // Fetch payments when the page loads
-        fetchPayments();
+        paymentDetailsContainer.innerHTML = detailsHTML;
+    } else {
+        paymentDetailsContainer.innerHTML = "<p>No payment details found.</p>";
+    }
+});
     </script>
 </body>
 </html>
