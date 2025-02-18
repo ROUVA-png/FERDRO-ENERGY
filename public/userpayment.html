@@ -5,10 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Details</title>
     <link rel="stylesheet" href="style.css">
-</head>
-<style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
 
-</style>
+        .container {
+            width: 60%;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        ul {
+            text-align: left;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 5px 0;
+            font-size: 18px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
 <body>
     <div class="container">
         <h2>Payment Details</h2>
@@ -18,39 +56,39 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-    const params = new URLSearchParams(window.location.search);
-    const paymentDetailsContainer = document.getElementById("paymentDetails");
+            const params = new URLSearchParams(window.location.search);
+            const paymentDetailsContainer = document.getElementById("paymentDetails");
 
-    if (params.has("username")) {
-        const details = {
-            "Full Name": params.get("username"),
-            "Email": params.get("email"),
-            "Phone Number": params.get("phone"),
-            "Address": params.get("address"),
-            "Solar Panel Type": params.get("panelType"),
-            "Panel Quantity": params.get("panelQuantity"),
-            "Battery Type": params.get("batteryType"),
-            "Battery Quantity": params.get("batteryQuantity"),
-            "Service Type": params.get("serviceType"),
-            "Installation Type": params.get("installationType"),
-            "Company Name": params.get("companyName") || "N/A",
-            "Service Option": params.get("serviceOption"),
-            "Total Amount": `₦${parseFloat(params.get("totalAmount")).toLocaleString()}`,
-            "Upfront Payment (30%)": `₦${parseFloat(params.get("upfrontPayment")).toLocaleString()}`,
-            "Remaining Balance (70%)": `₦${(parseFloat(params.get("totalAmount")) * 0.7).toLocaleString()}`
-        };
+            if (params.has("username")) {
+                const details = {
+                    "Full Name": params.get("username"),
+                    "Email": params.get("email"),
+                    "Phone Number": params.get("phone"),
+                    "Address": params.get("address"),
+                    "Solar Panel Type": params.get("panelType"),
+                    "Panel Quantity": params.get("panelQuantity"),
+                    "Battery Type": params.get("batteryType"),
+                    "Battery Quantity": params.get("batteryQuantity"),
+                    "Service Type": params.get("serviceType"),
+                    "Installation Type": params.get("installationType"),
+                    "Company Name": params.get("companyName") || "N/A",
+                    "Service Option": params.get("serviceOption"),
+                    "Total Amount": `₦${parseFloat(params.get("totalAmount") || 0).toLocaleString()}`,
+                    "Upfront Payment (30%)": `₦${parseFloat(params.get("upfrontPayment") || 0).toLocaleString()}`,
+                    "Remaining Balance (70%)": `₦${(parseFloat(params.get("totalAmount") || 0) * 0.7).toLocaleString()}`
+                };
 
-        let detailsHTML = "<ul>";
-        for (let key in details) {
-            detailsHTML += <li><strong>${key}:</strong> ${details[key]}</li>;
-        }
-        detailsHTML += "</ul>";
+                let detailsHTML = "<ul>";
+                for (let key in details) {
+                    detailsHTML += `<li><strong>${key}:</strong> ${details[key]}</li>`;
+                }
+                detailsHTML += "</ul>";
 
-        paymentDetailsContainer.innerHTML = detailsHTML;
-    } else {
-        paymentDetailsContainer.innerHTML = "<p>No payment details found.</p>";
-    }
-});
+                paymentDetailsContainer.innerHTML = detailsHTML;
+            } else {
+                paymentDetailsContainer.innerHTML = "<p>No payment details found.</p>";
+            }
+        });
     </script>
 </body>
 </html>
