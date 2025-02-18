@@ -14,7 +14,7 @@
     }
     body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0a3d62, #38ada9);
+            background: linear-gradient(135deg, PINK, #7e38ad); /* Classy green/blue gradient */
             margin: 0;
             padding: 0;
 
@@ -251,25 +251,99 @@ fieldset {
     });
 
     function payWithPaystack(userData) {
-        let handler = PaystackPop.setup({
-            key: 'pk_test_37148156d3759189a11462a9673b8225525a3dfd', // Replace with your Paystack Public Key
-            email: userData.email,
-            amount: userData.upfrontPayment * 100, // Paystack uses kobo
-            currency: "NGN",
-            callback: function (response) {
-                alert("Payment Successful! Reference: " + response.reference);
+    let handler = PaystackPop.setup({
+        key: 'pk_test_37148156d3759189a11462a9673b8225525a3dfd', // Replace with your Paystack Public Key
+        email: userData.email,
+        amount: userData.upfrontPayment * 100, // Convert to kobo
+        currency: "NGN",
+        metadata: {
+            custom_fields: [
+                {
+                    display_name: "Customer Name",
+                    variable_name: "customer_name",
+                    value: userData.username
+                },
+                {
+                    display_name: "Phone Number",
+                    variable_name: "phone_number",
+                    value: userData.phone
+                },
+                {
+                    display_name: "Address",
+                    variable_name: "address",
+                    value: userData.address
+                },
+                {
+                    display_name: "Service Type",
+                    variable_name: "service_type",
+                    value: userData.serviceType
+                },
+                {
+                    display_name: "Solar Panel Type",
+                    variable_name: "panel_type",
+                    value: userData.panelType
+                },
+                {
+                    display_name: "Battery Type",
+                    variable_name: "battery_type",
+                    value: userData.batteryType
+                },
+                {
+                    display_name: "Solar Panel Quantity",
+                    variable_name: "panel_quantity",
+                    value: userData.panelQuantity
+                },
+                {
+                    display_name: "Battery Quantity",
+                    variable_name: "battery_quantity",
+                    value: userData.batteryQuantity
+                },
+                {
+                    display_name: "Installation Type",
+                    variable_name: "installation_type",
+                    value: userData.installationType
+                },
+                {
+                    display_name: "Company Name",
+                    variable_name: "company_name",
+                    value: userData.companyName
+                },
+                {
+                    display_name: "Service Option",
+                    variable_name: "service_option",
+                    value: userData.serviceOption
+                },
+                {
+                    display_name: "Total Price",
+                    variable_name: "total_price",
+                    value: userData.totalPrice
+                },
+                {
+                    display_name: "Amount to Pay Now",
+                    variable_name: "paynow_amount",
+                    value: userData.payNowAmount
+                },
+                {
+                    display_name: "Battery Type",
+                    variable_name: "battery_type",
+                    value: userData.batteryType
+                },
+            ]
+        },
+        callback: function (response) {
+            alert("Payment Successful! Reference: " + response.reference);
 
-                // Redirect to userpayment.html with user data
-                let params = new URLSearchParams(userData).toString();
-                window.location.href = `userpayment.html?${params}`;
-            },
-            onClose: function () {
-                alert("Transaction Cancelled");
-            },
-        });
-        handler.openIframe();
-    }
+            // Redirect to userpayment.html with user data
+            let params = new URLSearchParams(userData).toString();
+            window.location.href = `userpayment.html?${params}`;
+        },
+        onClose: function () {
+            alert("Transaction Cancelled");
+        },
+    });
+    handler.openIframe();
+}
 });
-    </script>
+    </script>>
 </body>
 </html>
