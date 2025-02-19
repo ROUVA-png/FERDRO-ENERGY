@@ -151,7 +151,8 @@ fieldset {
             <fieldset>
                 <legend>Pricing and Terms</legend>
                 <p><strong>Total Price:</strong> ₦<span id="totalPrice">0</span></p>
-                <p><strong>Amount to Pay Now:</strong> ₦<span id="payNowAmount">0</span></p>
+                <p><strong>Amount to Pay Now(30%):</strong> ₦<span id="payNowAmount">0</span></p>
+                <P><strong>Remaining Balance(70%):</strong> ₦<span id="remainingBalance">0</span></P>
 
                 <label>
                     <input type="checkbox" id="terms" name="terms">
@@ -177,6 +178,7 @@ fieldset {
     const serviceOption = document.getElementById("serviceOption");
     const totalPriceElem = document.getElementById("totalPrice");
     const payNowAmountElem = document.getElementById("payNowAmount");
+    const remainingBalanceElem = document.getElementById("remainingBalance");
     const termsCheckbox = document.getElementById("terms");
     const payNowButton = document.getElementById("payNowButton");
 
@@ -198,9 +200,10 @@ fieldset {
 
         // If installation is selected, enforce 30% upfront payment
         let payNowAmount = serviceType.value === "Installation" ? totalPrice * 0.3 : totalPrice;
-
+        let remainingBalance = serviceType.value === "Installation" ? totalPrice * 0.7 : totalPrice;
         totalPriceElem.textContent = totalPrice.toLocaleString();
         payNowAmountElem.textContent = payNowAmount.toLocaleString();
+        remainingBalanceElem.textContent = remainingBalance.toLocaleString();
     }
 
     panelType.addEventListener("change", updatePrice);
@@ -251,11 +254,17 @@ fieldset {
     });
 
     function payWithPaystack(userData) {
+        let email = document.getElementById("email").value;
+        let payNowAmount = parseFloat(document.getElementById("payNowAmount").textContent.replace(/,/g, ''))*100;
+        let totalPrice = parseFloat(document.getElementById("totalPrice").textContent.replace(/,/g, ''))*100;
+        let remainingBalance = parseFloat(document.getElementById("remainingBalance").textContent.replace(/,/g, ''))*100;
+        
     let handler = PaystackPop.setup({
         key: 'pk_test_37148156d3759189a11462a9673b8225525a3dfd', // Replace with your Paystack Public Key
         email: userData.email,
         amount: userData.upfrontPayment * 100, // Convert to kobo
         currency: "NGN",
+        ref: "FERDRO_" + Math.floor((Math.random() * 1000000000) + 1),
         metadata: {
             custom_fields: [
                 {
@@ -320,13 +329,13 @@ fieldset {
                 },
                 {
                     display_name: "Amount to Pay Now",
-                    variable_name: "paynow_amount",
+                    variable_name: "pay_now_amount",
                     value: userData.payNowAmount
                 },
                 {
-                    display_name: "Battery Type",
-                    variable_name: "battery_type",
-                    value: userData.batteryType
+                    display_name: "Remaining Balance",
+                    variable_name: "remaining_balance",
+                    value: userData.remainingBalance
                 },
             ]
         },
